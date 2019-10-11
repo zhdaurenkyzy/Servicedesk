@@ -4,8 +4,7 @@
 
 <fmt:setLocale value="${local}"/>
 <fmt:setBundle basename = "lang" var = "resourceBundle" scope="session"/>
-<html>
-	<head><<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+<html><head><<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
 
     		<meta charset="utf-8">
     		<meta name="viewport" content="width=device-width; initial-scale=1.0">
