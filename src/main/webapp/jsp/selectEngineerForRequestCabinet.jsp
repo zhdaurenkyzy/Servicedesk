@@ -4,7 +4,7 @@
 <fmt:setLocale value="${local}"/>
 <fmt:setBundle basename = "lang" var = "resourceBundle" scope="session"/>
  <html>
- <head><link rel="shortcut icon" href="C:/Users/Жансая/IdeaProjects/servicedesk/favicon.ico" type="image/x-icon"/></head>
+ <head><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/></head>
  <script type = "text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
