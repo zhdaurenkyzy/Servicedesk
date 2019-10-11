@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_1.xsd">
+    <tlib-version>1.0</tlib-version>
+    <short-name>custom</short-name>
+    <uri>/WEB-INF/customTag</uri>
+    <tag>
+        <name>customIf</name>
+        <tag-class>com.epam.servicedesk.taglib.CustomTag</tag-class>
+        <body-content>scriptless</body-content>
+        <info>customIf tag displayes body if displayBody attribute is setted to true</info>
+        <attribute>
+            <name>displayBody</name>
+            <required>true</required>
+            <description>if statement</description>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>
