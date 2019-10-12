@@ -4,8 +4,8 @@
 <fmt:setLocale value="${local}"/>
 <fmt:setBundle basename = "lang" var = "resourceBundle" scope="session"/>
 <html>
-	<head><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-
+	<head><link rel="shortcut icon" href="C:/Users/Жансая/IdeaProjects/servicedesk/favicon.ico" type="image/x-icon"/>
+    	<head>
     		<meta charset="utf-8">
     		<meta name="viewport" content="width=device-width; initial-scale=1.0">
     		<style>
@@ -137,7 +137,7 @@
             						</table>
             					</div>
 			<div class="footer">
-                         <p>&copy; Zhansaya <a href="#">Github.com</a></p>
+                         <p>&copy; Zhansaya <a href="https://github.com/zhdaurenkyzy/Servicedesk">Github.com</a></p>
                          </div>
                         </div>
                      <script type="text/javascript">

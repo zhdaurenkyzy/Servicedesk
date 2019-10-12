@@ -1,8 +1,6 @@
 package com.epam.servicedesk.filter;
 
 import com.epam.servicedesk.enums.Role;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import static com.epam.servicedesk.util.ConstantForApp.*;

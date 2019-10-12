@@ -24,17 +24,17 @@ public class AccountFilter implements Filter {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
-            if (SecurityUtils.isSecurityPage(httpServletRequest)) {
-                if (httpServletRequest.getSession().getAttribute(USER_PARAMETER) == null) {
-                    httpServletResponse.sendRedirect(LOGIN_JSP);
-                    return;
-                }
-                if (!SecurityUtils.hasPermission(httpServletRequest)) {
-                    httpServletRequest.getSession().setAttribute(MESSAGE, ACCESS_DENIED);
-                    httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-                    return;
-                }
+        if (SecurityUtils.isSecurityPage(httpServletRequest)) {
+            if (httpServletRequest.getSession().getAttribute(USER_PARAMETER) == null) {
+                httpServletResponse.sendRedirect(LOGIN_JSP);
+                return;
             }
+            if (!SecurityUtils.hasPermission(httpServletRequest)) {
+                httpServletRequest.getSession().setAttribute(MESSAGE, ACCESS_DENIED);
+                httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
+                return;
+            }
+        }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 

@@ -24,6 +24,4 @@ public class ContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
 
     }
-
-
 }
