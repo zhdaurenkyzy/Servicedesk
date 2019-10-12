@@ -36,9 +36,9 @@
 				<div class="headerContent">
                 	<div class="logo"><a href="/">Service<span class="pink">Desk</span><span class="gray"></span></a></div>
                           <ul class="nav">
-                                <li><a href="/userCabinet" class="active"><fmt:message key = "key.personalAccount" bundle = "${resourceBundle}"/></a></li>
+                                <li><a href="/jsp/userCabinet.jsp" class="active"><fmt:message key = "key.personalAccount" bundle = "${resourceBundle}"/></a></li>
                                 <li><a href="/listRequest"><fmt:message key = "key.requests" bundle = "${resourceBundle}"/></a></li>
-                                <li><a href="jsp/options.jsp"><fmt:message key = "key.options" bundle = "${resourceBundle}"/></a></li>
+                                <li><a href="/jsp/options.jsp"><fmt:message key = "key.options" bundle = "${resourceBundle}"/></a></li>
                           </ul>
                     </div>
 			</div>

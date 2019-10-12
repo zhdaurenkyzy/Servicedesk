@@ -129,7 +129,6 @@ public class ConstantForApp {
     public static final String UPDATE_USER_URI = "/updateUser";
     public static final String UPDATE_USER_BY_OPERATOR_URI = "/updateUserByOperator";
     public static final String URI = "uri";
-    public static final String USER_CABINET_URI = "/userCabinet";
     public static final String DECISION_CABINET_JSP = "/jsp/decisionCabinet.jsp";
     public static final String EDIT_USER_BY_OPERATOR_JSP = "/jsp/editUserByOperator.jsp";
     public static final String GROUP_CABINET_JSP = "/jsp/groupCabinet.jsp";

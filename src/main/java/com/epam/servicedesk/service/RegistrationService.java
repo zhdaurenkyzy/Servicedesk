@@ -34,7 +34,7 @@ public class RegistrationService implements Service {
         }
         else {
             userDAO.add(user);
-            httpServletResponse.sendRedirect(LOGIN_JSP);
+            httpServletResponse.sendRedirect(MAIN_URI);
         }
     }
 

@@ -20,8 +20,8 @@
 			<div class="header">
 			<div class="row" align="right">
               <c:forEach var="language" items="${languages}">
-                <form method="POST" action="setLanguage">
-                 <input id="idField" type="hidden" name="page" value ="jsp/login.jsp">
+                <form method="POST" action="/setLanguage">
+                 <input id="idField" type="hidden" name="page" value ="/jsp/login.jsp">
                  <input id="idField" type="hidden" name="languageId" value = <c:out value="${language.getId()}"/>>
                  <input type="submit" value=<c:out value="${language.getName()}"/>>
                 </form>
@@ -62,7 +62,7 @@
                            </th>
                            <th>
                       </form>
-                      <form method="GET" action="/userCabinet">
+                      <form method="GET" action="/jsp/userCabinet.jsp">
                                        <input type="submit" value=<fmt:message key = "key.registrationAsGuest" bundle = "${resourceBundle}"/>>
                       </form>
                             </th>

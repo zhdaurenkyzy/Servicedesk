@@ -22,7 +22,7 @@ public class SetLanguageService implements Service {
         }
         httpServletRequest.getSession().setAttribute(LOCAL_PARAMETER, language.getLocal());
         if (httpServletRequest.getParameter(PAGE_PARAMETER) == null) {
-            httpServletResponse.sendRedirect(USER_CABINET_URI);
+            httpServletResponse.sendRedirect(USER_CABINET_JSP);
         } else {
             httpServletResponse.sendRedirect(httpServletRequest.getParameter(PAGE_PARAMETER));
         }

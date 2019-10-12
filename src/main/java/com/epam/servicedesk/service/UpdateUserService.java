@@ -34,7 +34,7 @@ public class UpdateUserService implements Service {
                 user.setPassword(DigestUtils.md5Hex(password));
                 userDAO.updateUser(user);
             }
-            httpServletResponse.sendRedirect("/listRequest");
+            httpServletResponse.sendRedirect(USER_CABINET_JSP);
     }
     }
 
