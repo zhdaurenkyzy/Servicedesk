@@ -19,7 +19,7 @@ public class EngineerRequestService implements Service {
             httpServletRequest.setAttribute(LIST_USER_PARAMETER, userDAO.getUsersByRole());
         }
         if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
-                httpServletRequest.setAttribute(LIST_USER_PARAMETER, userDAO.getAllUserByGroupId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))));
+            httpServletRequest.setAttribute(LIST_USER_PARAMETER, userDAO.getAllUserByGroupId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))));
         }
         httpServletRequest.getServletContext().getRequestDispatcher(SELECT_ENGINEER_FOR_REQUEST_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
 

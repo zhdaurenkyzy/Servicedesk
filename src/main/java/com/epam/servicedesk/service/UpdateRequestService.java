@@ -5,6 +5,7 @@ import com.epam.servicedesk.entity.Request;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Priority;
 import com.epam.servicedesk.exception.ValidationException;
+import com.epam.servicedesk.validation.FieldsRequestValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.epam.servicedesk.util.ConstantForApp.*;
-import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 import static com.epam.servicedesk.validation.RequestValidation.validateDescriptionOrDecision;
 import static com.epam.servicedesk.validation.RequestValidation.validateTheme;
 
@@ -22,52 +22,31 @@ public class UpdateRequestService implements Service {
         new ListProjectService().execute(httpServletRequest,httpServletResponse);
         RequestDAO requestDAO = new RequestDAO();
         Request request = new Request();
+        FieldsRequestValidator fieldsRequestValidator = new FieldsRequestValidator();
         User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         getFieldsRequest(httpServletRequest);
         Long selectStatusId = Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER));
         Long requestId = Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER));
-        Request currentRequest = requestDAO.getRequestById(requestId);
-
-        if((selectStatusId!=4)&&(currentRequest.getAuthorOfDecisionId()==0)) {
+        Request oldRequest = requestDAO.getRequestById(requestId);
+        fieldsRequestValidator.setModeIdRequest(request, user, httpServletRequest.getParameter(SELECT_MODE_PARAMETER));
+        fieldsRequestValidator.setGroupIdRequest(request, oldRequest.getGroupId(), user, httpServletRequest.getParameter(SELECT_GROUP_PARAMETER));
+        fieldsRequestValidator.setEngineerIdRequest(request,oldRequest.getEngineerId(), user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
+        fieldsRequestValidator.setProjectIdRequest(request, user, httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER));
+        fieldsRequestValidator.setClientIdRequest(request, user, httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER));
+        if((selectStatusId!=4)&&(oldRequest.getAuthorOfDecisionId()==0)) {
             setValueRequest(httpServletRequest, request);
-            if(httpServletRequest.getParameter(SELECT_GROUP_PARAMETER)!=null) {
-                String selectGroup = httpServletRequest.getParameter(SELECT_GROUP_PARAMETER);
-                if(isNumeric(selectGroup)) {
-                    request.setGroupId(Long.parseLong(selectGroup));
-                }
-            }
-            request.setEngineerId(Long.parseLong(httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER)));
-            if(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER)!=null) {
-                String selectProject = httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER);
-                if(isNumeric(selectProject)) {
-                    request.setProjectId(Long.parseLong(selectProject));
-                }
-            }
-            request.setClientId(Long.parseLong(httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER)));
             request.setDecision(EMPTY_STRING);
             request.setAuthorOfDecisionId(0);
             request.setId(requestId);
             requestDAO.updateRequestById(request, user);
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
         }
-        else if(((selectStatusId==4)&&(currentRequest.getAuthorOfDecisionId()!=0)) |
-                ((selectStatusId!=4)&&(currentRequest.getAuthorOfDecisionId()!=0))) {
+        else if(((selectStatusId==4)&&(oldRequest.getAuthorOfDecisionId()!=0)) |
+                ((selectStatusId!=4)&&(oldRequest.getAuthorOfDecisionId()!=0))) {
             setValueRequest(httpServletRequest, request);
-            if(httpServletRequest.getParameter(SELECT_GROUP_PARAMETER)!=null) {
-                if(isNumeric(httpServletRequest.getParameter(SELECT_GROUP_PARAMETER))) {
-                    request.setGroupId(Long.parseLong(httpServletRequest.getParameter(SELECT_GROUP_PARAMETER)));
-                }
-            }
-            request.setEngineerId(Long.parseLong(httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER)));
-            if(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER)!=null) {
-                if(isNumeric(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER))) {
-                    request.setProjectId(Long.parseLong(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER)));
-                }
-            }
-            request.setClientId(Long.parseLong(httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER)));
             request.setDecision(requestDAO.getRequestById(requestId).getDecision());
-            request.setDateOfDecision(currentRequest.getDateOfDecision());
-            request.setAuthorOfDecisionId(currentRequest.getAuthorOfDecisionId());
+            request.setDateOfDecision(oldRequest.getDateOfDecision());
+            request.setAuthorOfDecisionId(oldRequest.getAuthorOfDecisionId());
             request.setId(requestId);
             requestDAO.updateRequestById(request, user);
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
@@ -85,7 +64,7 @@ public class UpdateRequestService implements Service {
         httpServletRequest.setAttribute(STATUS_LIST_PARAMETER, statusDAO.getAllStatus());
         httpServletRequest.setAttribute(MODE_LIST_PARAMETER, modeDAO.getAllMode());
         httpServletRequest.setAttribute(LEVEL_LIST_PARAMETER, levelDAO.getAllLevel());
-        httpServletRequest.setAttribute(GROUP__LIST_PARAMETER, groupDAO.getAllGroup());
+        httpServletRequest.setAttribute(GROUP_LIST_PARAMETER, groupDAO.getAllGroup());
         httpServletRequest.setAttribute(PRIORITY_LIST_PARAMETER, Priority.values());
     }
 
@@ -94,7 +73,6 @@ public class UpdateRequestService implements Service {
         request.setDescription(validateDescriptionOrDecision(httpServletRequest.getParameter(DESCRIPTION_PARAMETER)));
         request.setStatusId(Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER)));
         request.setLevelId(Long.parseLong(httpServletRequest.getParameter(SELECT_LEVEL_PARAMETER)));
-        request.setModeId(Long.parseLong(httpServletRequest.getParameter(SELECT_MODE_PARAMETER)));
         request.setPriority(Priority.getPriority(Long.parseLong(httpServletRequest.getParameter(SELECT_PRIORITY_PARAMETER))));
 
     }

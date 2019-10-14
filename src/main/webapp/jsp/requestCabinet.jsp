@@ -8,7 +8,10 @@
  <script type = "text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+ <style>
+         <%@include file="/css/style.css"%>
+         <%@include file="/css/media-queries.css"%>
+     </style>
  <body>
  <div class="wrapper">
  <div class="header">
@@ -110,6 +113,7 @@
             </c:forEach>
          </select>
          </p>
+   <c:if test="${user.getUserRole() != role}">
 <script type = "text/javascript">
 $(document).ready(function (){
 var id=$(".group").val();
@@ -142,14 +146,14 @@ $(".engineer").html(data);
 
          <option disabled><fmt:message key = "key.chooseGroup" bundle = "${resourceBundle}"/></option>
 
-         <option <c:if test="${group.getId()==request.getGroupId()}"> selected </c:if> value="${group.getId()==null}"><fmt:message key = "key.allUser" bundle = "${resourceBundle}"/></option>
+         <option <c:if test="${group.getId()==request.getGroupId()}"> selected </c:if> value=null><fmt:message key = "key.allUser" bundle = "${resourceBundle}"/></option>
         <c:forEach var="group" items="${groups}">
          <option <c:if test="${group.getId()==request.getGroupId()}"> selected </c:if> value="${group.getId()}"><c:out value="${group.getName()}"/></option>
             </c:forEach>
          </select>
 
    <span class = "engineer"></span>
-
+</c:if>
 
 <script type = "text/javascript">
 $(document).ready(function (){
@@ -177,18 +181,18 @@ $(".client").html(data);
 });
 });
 </script>
-
+<c:if test="${user.getUserRole() != role}">
 <p><fmt:message key = "key.projectName" bundle = "${resourceBundle}"/>* :<select class="project" required size="1" name="selectProject">
 
-
-        <option name="idProject" <c:if test="${project.isState()==false}"> selected </c:if> value="${project.getId()==null}"><fmt:message key = "key.allClient" bundle = "${resourceBundle}"/></option>
+        <option name="idProject" <c:if test="${project.isState()==false}"> selected </c:if> value=null><fmt:message key = "key.allClient" bundle = "${resourceBundle}"/></option>
          <c:forEach var="project" items="${projects}">
             <option name="idProject"<c:if test="${project.getId()==request.getProjectId()}"> selected </c:if> value="${project.getId()}"><c:out value="${project.getName()}"/></option>
 
             </c:forEach>
          </select>
-<span class = "client"></span>
 
+<span class = "client"></span>
+</c:if>
 <p><fmt:message key = "key.theme" bundle = "${resourceBundle}"/>: <input id="themeField" type="text"  name="themeName" required value=<c:out value="${request.getTheme()}"/>></p>
 <p><fmt:message key = "key.description" bundle = "${resourceBundle}"/><Br>
    <textarea name="description" cols="100" rows="10"><c:out value="${request.getDescription()}"/></textarea></p>

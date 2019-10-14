@@ -33,7 +33,7 @@ public class AddUserToGroupService implements Service {
                 List<User> selectedUsers = new ArrayList<>();
                 for (long id : userIdListOfSelectedUsers) {
                     selectedUsers.add(userDAO.getById(id));
-            }
+                }
                 userDAO.addListUserToGroup(currentGroup, selectedUsers);
             }
         }
@@ -49,6 +49,6 @@ public class AddUserToGroupService implements Service {
                 }
             }
         }
-    return true;
+        return true;
     }
 }

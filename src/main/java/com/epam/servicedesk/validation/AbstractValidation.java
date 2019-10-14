@@ -6,19 +6,20 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public abstract class AbstractValidation {
 
-    static Long validateLong(String string) throws ValidationException {
+    public static Long validateLong(String string) throws ValidationException {
         long longNumeric;
         try {
             longNumeric = Long.parseLong(string);
         } catch (NumberFormatException e) {
-            throw new ValidationException();
+            throw new ValidationException(INCORRECT_FORMAT);
         }
         return longNumeric;
     }
 
     public static Long validateId(String id) throws ValidationException {
-        if (EMPTY_STRING.equals(id)) {
+        if (id.equals("null")) {
             id = "0";
+
         }
         return validateLong(id);
     }
@@ -29,6 +30,7 @@ public abstract class AbstractValidation {
         }
         return string;
     }
+
     public static boolean isNumeric(String string){
         try {
             Long.parseLong(string);

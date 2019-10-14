@@ -52,6 +52,7 @@
 						<li><a href="/listRequest?statusId=4"><fmt:message key = "key.closedRequests" bundle = "${resourceBundle}"/></a></li>
 						<li><a href="/listRequest?clientId=${user.getId()}"><fmt:message key = "key.requestsByClient" bundle = "${resourceBundle}"/></a></li>
 						<li><a href="/listRequest?engineerId=${user.getId()}"><fmt:message key = "key.assignedToMe" bundle = "${resourceBundle}"/></a></li>
+						<c:if test="${user.getUserRole()==role}"><li><a href="/listRequest?engineerId=0"><fmt:message key = "key.notSighnedRequests" bundle = "${resourceBundle}"/></a></li></c:if>
 						<li><a href="/listRequest"><fmt:message key = "key.allRequests" bundle = "${resourceBundle}"/></a></li>
 					</ul>
 				</div>

@@ -19,7 +19,7 @@ public class ChangeProjectStateService implements Service {
         ProjectDAO projectDAO = new ProjectDAO();
         Project project = new Project();
         if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
-           project = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
+            project = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
         boolean currentState = project.isState();
         if(currentState){

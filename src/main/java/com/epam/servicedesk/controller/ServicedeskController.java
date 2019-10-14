@@ -18,18 +18,15 @@ public class ServicedeskController extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        String stringUr = "jsp/" + httpServletRequest.getRequestURI();
-        // System.out.println(stringUr);
-
         Factory factory = Factory.getInstance();
         String stringUri = httpServletRequest.getRequestURI();
         Service service = factory.getService(stringUri);
-        System.out.println(stringUri);
         try {
             service.execute(httpServletRequest, httpServletResponse);
         } catch (ValidationException e) {
             LOGGER.error(e);
             httpServletRequest.getSession().setAttribute(MESSAGE, e.getMessage());
+            httpServletRequest.getSession().setAttribute("cause", e.getCause());
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
         }catch (Exception e) {
             LOGGER.error(e);

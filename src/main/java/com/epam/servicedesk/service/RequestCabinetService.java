@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.*;
 import com.epam.servicedesk.enums.Priority;
+import com.epam.servicedesk.enums.Role;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +37,8 @@ public class RequestCabinetService implements Service {
         httpServletRequest.setAttribute(STATUS_LIST_PARAMETER, statusDAO.getAllStatus());
         httpServletRequest.setAttribute(MODE_LIST_PARAMETER, modeDAO.getAllMode());
         httpServletRequest.setAttribute(LEVEL_LIST_PARAMETER, levelDAO.getAllLevel());
-        httpServletRequest.setAttribute(GROUP__LIST_PARAMETER, groupDAO.getAllGroup());
+        httpServletRequest.setAttribute(GROUP_LIST_PARAMETER, groupDAO.getAllGroup());
+        httpServletRequest.setAttribute(ROLE_PARAMETER, Role.CLIENT);
         httpServletRequest.setAttribute(PRIORITY_LIST_PARAMETER, Priority.values());
     }
 }

@@ -22,10 +22,10 @@ public class LoginService implements Service {
         String password = httpServletRequest.getParameter(PASSWORD_PARAMETER);
         User user = userDAO.getByLogin(login);
         if ((user.getLogin() != null)&&(DigestUtils.md5Hex(password).equals(user.getPassword()))) {
-                HttpSession session = httpServletRequest.getSession();
-                session.setAttribute(USER_PARAMETER, user);
-                httpServletRequest.setAttribute(URI, UPDATE_USER_URI);
-                httpServletRequest.getServletContext().getRequestDispatcher(USER_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
+            HttpSession session = httpServletRequest.getSession();
+            session.setAttribute(USER_PARAMETER, user);
+            httpServletRequest.setAttribute(URI, UPDATE_USER_URI);
+            httpServletRequest.getServletContext().getRequestDispatcher(USER_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
         }
         else {
             httpServletRequest.getSession().setAttribute(MESSAGE, WRONG_LOGIN_OR_PASS_MESSAGE_ID);

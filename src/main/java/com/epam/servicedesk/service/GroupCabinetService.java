@@ -23,11 +23,11 @@ public class GroupCabinetService implements Service {
             httpServletRequest.setAttribute(USER_LIST, userDAO.getAllUserWithoutGroup(Long.parseLong(GroupIDFromGetMethod)));
             httpServletRequest.setAttribute(USERS_BY_GROUP_ID_PARAMETER, userDAO.getAllUserByGroupId(Long.parseLong(GroupIDFromGetMethod)));
             httpServletRequest.setAttribute(URI, UPDATE_GROUP_NAME_URI);
-            }
+        }
         else {
             httpServletRequest.setAttribute(URI, CREATE_GROUP_URI);
             httpServletRequest.setAttribute(USER_LIST, userDAO.getAllUsers());
-                 }
+        }
         httpServletRequest.getServletContext().getRequestDispatcher(GROUP_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
     }
 }

@@ -26,8 +26,8 @@ public class UpdateUserByOperatorService implements Service {
         else {
             user.setPassword(DigestUtils.md5Hex(validatePassword(httpServletRequest.getParameter(PASSWORD_PARAMETER))));
         }
-            user.setUserRole(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getUserRole());
-                userDAO.updateUser(user);
+        user.setUserRole(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getUserRole());
+        userDAO.updateUser(user);
         httpServletResponse.sendRedirect(LIST_USER_URI);
     }
 
@@ -38,5 +38,5 @@ public class UpdateUserByOperatorService implements Service {
         user.setMobile(validatePhone(httpServletRequest.getParameter(MOBILE_PARAMETER)));
         user.setMail(validateMail(httpServletRequest.getParameter(MAIL_PARAMETER)));
         user.setId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
-        }
     }
+}

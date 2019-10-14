@@ -21,7 +21,7 @@ public class ConstantForApp {
     public static final String GROUP_ALREADY_EXISTS_MESSAGE_ID = "3";
     public static final String GROUP_PARAMETER = "group";
     public static final String GROUP_ID_PARAMETER = "groupId";
-    public static final String GROUP__LIST_PARAMETER = "groups";
+    public static final String GROUP_LIST_PARAMETER = "groups";
     public static final String GROUP_NAME_PARAMETER = "groupName";
     public static final int GROUP_OR_PROJECT_MAX_LENGTH = 100;
     public static final String ID_PARAMETER = "id";
@@ -46,8 +46,11 @@ public class ConstantForApp {
     public static final String MESSAGE = "message";
     public static final String MOBILE_PARAMETER = "mobile";
     public static final String MODE_LIST_PARAMETER = "modes";
+    public static final long MODE_WEB_FORM = 4;
     public static final int NAME_MAX_LENGTH = 45;
     public static final String NAME_PARAMETER = "name";
+    public static final String NULL_STRING = "null";
+    public static final long NULL_ID = 0;
     public static final String LOGIN_PATTERN = "^[A-Za-z0-9_-]{4,16}$";
     public static final long OPERATOR_ROLE_ID_DEFAULT = 0;
     public static final String PAGE_PARAMETER = "page";
