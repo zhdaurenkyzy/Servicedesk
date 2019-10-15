@@ -23,6 +23,5 @@ public class HistoryService implements Service {
             httpServletRequest.setAttribute(REQUEST_ID_FOR_PAGE_PARAMETER, request.getId());
         }
         httpServletRequest.getServletContext().getRequestDispatcher(HISTORY_OF_REQUEST_JSP).forward(httpServletRequest, httpServletResponse);
-
     }
 }

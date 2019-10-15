@@ -2,7 +2,10 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.GroupDAO;
 import com.epam.servicedesk.entity.Group;
+import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.exception.ValidationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,16 +17,19 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 import static com.epam.servicedesk.validation.GroupAndProjectValidation.validateNameGroupOrProject;
 
 public class UpdateGroupNameService implements Service {
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         GroupDAO groupDAO = new GroupDAO();
         Group group = new Group();
         group.setName(validateNameGroupOrProject(httpServletRequest.getParameter(GROUP_NAME_PARAMETER)));
+        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         if(isNumeric(httpServletRequest.getParameter(GROUP_ID_PARAMETER))) {
             group.setId(Long.parseLong(httpServletRequest.getParameter(GROUP_ID_PARAMETER)));
             if(!group.getName().equals(groupDAO.getByName(group.getName()).getName())) {
                 groupDAO.updateGroup(group);
+                LOGGER.info("Group name was updated groupId = " + group.getId() + " by userId " + user.getId());
             }
         }
         httpServletRequest.getServletContext().getRequestDispatcher(LIST_GROUP_URI).forward(httpServletRequest, httpServletResponse);

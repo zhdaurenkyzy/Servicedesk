@@ -11,7 +11,6 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class EngineerRequestService implements Service {
-
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         UserDAO userDAO = new UserDAO();
@@ -22,6 +21,5 @@ public class EngineerRequestService implements Service {
             httpServletRequest.setAttribute(LIST_USER_PARAMETER, userDAO.getAllUserByGroupId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))));
         }
         httpServletRequest.getServletContext().getRequestDispatcher(SELECT_ENGINEER_FOR_REQUEST_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
-
     }
 }

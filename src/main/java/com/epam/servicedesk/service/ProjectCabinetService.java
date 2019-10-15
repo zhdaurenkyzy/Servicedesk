@@ -20,6 +20,5 @@ public class ProjectCabinetService implements Service {
             httpServletRequest.setAttribute(PROJECT_ID_GET_METHOD_PARAMETER, Long.parseLong(httpServletRequest.getParameter(PROJECT_ID_GET_METHOD_PARAMETER)));
         }
         httpServletRequest.getServletContext().getRequestDispatcher(PROJECT_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
-
     }
 }

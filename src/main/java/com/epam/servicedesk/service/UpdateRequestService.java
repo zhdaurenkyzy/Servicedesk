@@ -33,16 +33,16 @@ public class UpdateRequestService implements Service {
         fieldsRequestValidator.setEngineerIdRequest(request,oldRequest.getEngineerId(), user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
         fieldsRequestValidator.setProjectIdRequest(request, user, httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER));
         fieldsRequestValidator.setClientIdRequest(request, user, httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER));
-        if((selectStatusId!=4)&&(oldRequest.getAuthorOfDecisionId()==0)) {
+        if((selectStatusId!=RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()==0)) {
             setValueRequest(httpServletRequest, request);
             request.setDecision(EMPTY_STRING);
-            request.setAuthorOfDecisionId(0);
+            request.setAuthorOfDecisionId(NULL_ID);
             request.setId(requestId);
             requestDAO.updateRequestById(request, user);
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
         }
-        else if(((selectStatusId==4)&&(oldRequest.getAuthorOfDecisionId()!=0)) |
-                ((selectStatusId!=4)&&(oldRequest.getAuthorOfDecisionId()!=0))) {
+        else if(((selectStatusId==RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()!=NULL_ID)) |
+                ((selectStatusId!=RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()!=NULL_ID))) {
             setValueRequest(httpServletRequest, request);
             request.setDecision(requestDAO.getRequestById(requestId).getDecision());
             request.setDateOfDecision(oldRequest.getDateOfDecision());
@@ -74,6 +74,5 @@ public class UpdateRequestService implements Service {
         request.setStatusId(Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER)));
         request.setLevelId(Long.parseLong(httpServletRequest.getParameter(SELECT_LEVEL_PARAMETER)));
         request.setPriority(Priority.getPriority(Long.parseLong(httpServletRequest.getParameter(SELECT_PRIORITY_PARAMETER))));
-
     }
 }

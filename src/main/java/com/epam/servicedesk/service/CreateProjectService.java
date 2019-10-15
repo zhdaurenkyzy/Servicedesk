@@ -13,7 +13,6 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.GroupAndProjectValidation.validateNameGroupOrProject;
 
 public class CreateProjectService implements Service {
-
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         ProjectDAO projectDAO = new ProjectDAO();
@@ -28,6 +27,5 @@ public class CreateProjectService implements Service {
             projectDAO.add(project);
             httpServletResponse.sendRedirect(LIST_PROJECT_STATE_TRUE_URI);
         }
-
     }
 }

@@ -55,6 +55,7 @@ public class Factory  {
     public static Factory getInstance(){
         return FACTORY;
     }
+
     public Service getService(String stringUri){
         return STRING_SERVICE_MAP.get(stringUri);
     }

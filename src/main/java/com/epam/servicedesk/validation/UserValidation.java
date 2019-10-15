@@ -33,7 +33,7 @@ public class UserValidation extends AbstractValidation {
         if ((login == null) || (EMPTY_STRING.equals(login) || (EMPTY_PLACE.equals(login)) ||
                 (login.length() > MAX_LENGTH_OF_STRING) || (login.length() < MIN_LENGTH_OF_LOGIN) ||
                 !doMatch(login, LOGIN_PATTERN))) {
-            throw new ValidationException(INCORRECT_FORMAT);
+            throw new ValidationException(LOGIN_INCORRECT_FORMAT);
         }
         return login;
     }
@@ -41,7 +41,7 @@ public class UserValidation extends AbstractValidation {
     public static String validatePassword(String password) throws ValidationException {
         if ((password == null) || (EMPTY_STRING.equals(password) || (EMPTY_PLACE.equals(password)) ||
                 (password.length() > MAX_LENGTH_OF_STRING) || (password.length() < MIN_LENGTH_OF_PASSWORD))) {
-            throw new ValidationException(INCORRECT_FORMAT);
+            throw new ValidationException(PASSWORD_INCORRECT_FORMAT);
         }
         return password;
     }
@@ -49,7 +49,7 @@ public class UserValidation extends AbstractValidation {
     public static String validateMail(String mail) throws ValidationException {
         if ((mail.length() > MAIL_MAX_LENGTH) || (mail.length() < MAIL_MIN_LENGTH) ||
                 !doMatch(mail, MAIL_PATTERN)) {
-            throw new ValidationException(INCORRECT_FORMAT);
+            throw new ValidationException(MAIL_INCORRECT_FORMAT);
         }
         return mail;
     }

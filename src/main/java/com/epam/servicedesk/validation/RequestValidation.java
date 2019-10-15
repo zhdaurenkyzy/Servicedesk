@@ -17,5 +17,4 @@ public class RequestValidation extends AbstractValidation {
         }
         return string;
     }
-
 }

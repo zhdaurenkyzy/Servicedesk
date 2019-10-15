@@ -29,7 +29,6 @@ public class RegistrationUserByOperatorService implements Service {
             user.setLogin(validateLogin(httpServletRequest.getParameter(LOGIN_PARAMETER)));
             user.setPassword(DigestUtils.md5Hex(validatePassword(httpServletRequest.getParameter(PASSWORD_PARAMETER))));
             user.setUserRole(Role.getRole(Long.parseLong(httpServletRequest.getParameter(ROLE_PARAMETER))));
-
             if(user.getLogin().equals(userDAO.getByLogin(user.getLogin()).getLogin())){
                 httpServletRequest.setAttribute(MESSAGE, ACCOUNT_ALREADY_EXISTS_MESSAGE_ID);
                 httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);

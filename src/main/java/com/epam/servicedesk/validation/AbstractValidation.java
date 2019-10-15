@@ -5,7 +5,6 @@ import com.epam.servicedesk.exception.ValidationException;
 import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public abstract class AbstractValidation {
-
     public static Long validateLong(String string) throws ValidationException {
         long longNumeric;
         try {
@@ -17,8 +16,8 @@ public abstract class AbstractValidation {
     }
 
     public static Long validateId(String id) throws ValidationException {
-        if (id.equals("null")) {
-            id = "0";
+        if (id.equals(NULL_STRING)) {
+            id = ZERO_STRING;
 
         }
         return validateLong(id);
@@ -39,5 +38,4 @@ public abstract class AbstractValidation {
             return false;
         }
     }
-
 }

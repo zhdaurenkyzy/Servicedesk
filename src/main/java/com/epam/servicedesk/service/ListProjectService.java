@@ -1,8 +1,6 @@
 package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.ProjectDAO;
-import com.epam.servicedesk.entity.Project;
-import com.epam.servicedesk.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

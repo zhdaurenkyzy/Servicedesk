@@ -43,7 +43,6 @@ public class FieldsRequestValidator {
     }
 
     public void setGroupIdRequest(Request request, long oldGroupId, User user, String parameter) {
-
         if(user.getUserRole()==Role.CLIENT&&oldGroupId==NULL_ID){
             request.setGroupId(NULL_ID);
         }
@@ -59,7 +58,6 @@ public class FieldsRequestValidator {
     }
 
     public void setEngineerIdRequest(Request request, long oldEngineerId,  User user, String parameter) {
-
         if(user.getUserRole()==Role.CLIENT&&oldEngineerId==NULL_ID){
             request.setEngineerId(NULL_ID);
         }
@@ -68,6 +66,4 @@ public class FieldsRequestValidator {
         }
         else request.setEngineerId(Long.parseLong(parameter));
     }
-
-
 }

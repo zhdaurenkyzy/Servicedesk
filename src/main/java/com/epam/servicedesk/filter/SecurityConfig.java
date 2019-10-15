@@ -6,11 +6,13 @@ import java.util.*;
 import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public class SecurityConfig {
+
     private  static final Map<Role, List<String>> mapConfig = new HashMap<>();
 
     static {
         init();
     }
+
     private static void init(){
         List<String> urlPatternsGuest = new ArrayList<>();
         urlPatternsGuest.add(CREATE_REQUEST_URI);
@@ -22,7 +24,6 @@ public class SecurityConfig {
         urlPatternsGuest.add(SELECT_ENGINEER_FOR_REQUEST_CABINET_JSP);
         urlPatternsGuest.add(UPDATE_USER_URI);
         mapConfig.put(Role.GUEST, urlPatternsGuest);
-
         List<String> urlPatternsClient = new ArrayList<>();
         setUrl(urlPatternsGuest, urlPatternsClient);
         urlPatternsClient.add(DECISION_CABINET_URI);
@@ -34,11 +35,9 @@ public class SecurityConfig {
         urlPatternsClient.add(RESOLVE_REQUEST_URI);
         urlPatternsClient.add(UPDATE_REQUEST_URI);
         mapConfig.put(Role.CLIENT, urlPatternsClient);
-
         List<String> urlPatternsEngineer = new ArrayList<>();
         setUrl(urlPatternsClient, urlPatternsEngineer);
         mapConfig.put(Role.ENGINEER, urlPatternsEngineer);
-
         List<String> urlPatternsOperator = new ArrayList<>();
         setUrl(urlPatternsEngineer, urlPatternsOperator);
         urlPatternsOperator.add(ADD_USER_TO_GROUP_URI);
@@ -69,6 +68,7 @@ public class SecurityConfig {
         urlPatternsOperator.add(UPDATE_USER_BY_OPERATOR_URI);
         mapConfig.put(Role.OPERATOR, urlPatternsOperator);
     }
+
     public static Set<Role> getAllRoles(){
         return mapConfig.keySet();
     }

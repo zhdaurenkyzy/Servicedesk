@@ -2,7 +2,6 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
-import com.epam.servicedesk.exception.ValidationException;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
@@ -32,5 +31,4 @@ public class LoginService implements Service {
             httpServletRequest.getServletContext().getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
         }
     }
-
 }

@@ -9,7 +9,6 @@ import static com.epam.servicedesk.util.ConstantForApp.MAIN_URI;
 import static com.epam.servicedesk.util.ConstantForApp.USER_PARAMETER;
 
 public class LogOutService implements Service {
-
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         if (httpServletRequest.getSession().getAttribute(USER_PARAMETER) != null) {

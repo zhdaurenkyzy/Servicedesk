@@ -18,22 +18,21 @@ import static com.epam.servicedesk.validation.RequestValidation.validateDescript
 import static com.epam.servicedesk.validation.RequestValidation.validateTheme;
 
 public class CreateRequestService implements Service {
-
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         RequestDAO requestDAO = new RequestDAO();
         Request request = new Request();
         FieldsRequestValidator fieldsRequestValidator = new FieldsRequestValidator();
         User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER))!=4) {
+        if(Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER))!=RESOLVED_STATUS_ID) {
             request.setTheme(validateTheme(httpServletRequest.getParameter(THEME_PARAMETER)));
             request.setDescription(validateDescriptionOrDecision(httpServletRequest.getParameter(DESCRIPTION_PARAMETER)));
             request.setStatusId(Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER)));
             request.setLevelId(Long.parseLong(httpServletRequest.getParameter(SELECT_LEVEL_PARAMETER)));
             fieldsRequestValidator.setModeIdRequest(request, user, httpServletRequest.getParameter(SELECT_MODE_PARAMETER));
             request.setPriority(Priority.getPriority(Long.parseLong(httpServletRequest.getParameter(SELECT_PRIORITY_PARAMETER))));
-            fieldsRequestValidator.setGroupIdRequest(request, 0, user, httpServletRequest.getParameter(SELECT_GROUP_PARAMETER));
-            fieldsRequestValidator.setEngineerIdRequest(request, 0, user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
+            fieldsRequestValidator.setGroupIdRequest(request, NULL_ID, user, httpServletRequest.getParameter(SELECT_GROUP_PARAMETER));
+            fieldsRequestValidator.setEngineerIdRequest(request, NULL_ID, user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
             fieldsRequestValidator.setProjectIdRequest(request, user, httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER));
             fieldsRequestValidator.setClientIdRequest(request, user, httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER));
             request.setAuthorOfCreationId(user.getId());

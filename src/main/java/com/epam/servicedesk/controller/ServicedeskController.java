@@ -21,13 +21,11 @@ public class ServicedeskController extends HttpServlet {
         Factory factory = Factory.getInstance();
         String stringUri = httpServletRequest.getRequestURI();
         Service service = factory.getService(stringUri);
-        System.out.println(stringUri);
         try {
             service.execute(httpServletRequest, httpServletResponse);
         } catch (ValidationException e) {
-            LOGGER.error(e);
+            LOGGER.error(e.getMessage());
             httpServletRequest.getSession().setAttribute(MESSAGE, e.getMessage());
-            httpServletRequest.getSession().setAttribute("cause", e.getCause());
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
         }catch (Exception e) {
             LOGGER.error(e);

@@ -18,7 +18,6 @@ public final class ConstantForDAO {
             "     ON request.REQUEST_AUTHOR_OF_CREATION=author_of_creation.USER_ID " +
             "     LEFT OUTER JOIN user as author_of_decision " +
             "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID ORDER BY request.REQUEST_ID DESC";
-
     public static final String ADD_GROUP = "INSERT INTO ENGINEER_GROUP (GROUP_NAME) VALUES (?)";
     public static final String GET_GROUP_BY_NAME = "SELECT * FROM ENGINEER_GROUP WHERE GROUP_NAME=?";
     public static final String GET_ALL_GROUP = "SELECT * FROM ENGINEER_GROUP ORDER BY GROUP_NAME";

@@ -38,8 +38,8 @@ public class ListRequestService implements Service {
         else if((engineerId!=null && isNumeric(engineerId)) && Long.parseLong(engineerId)==user.getId()){
             httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE, requestDAO.getAll(user.getId(), GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID));
         }
-        else if((engineerId!=null && isNumeric(engineerId)) && Long.parseLong(engineerId)==0){
-            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE, requestDAO.getAll(0, GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID));
+        else if((engineerId!=null && isNumeric(engineerId)) && Long.parseLong(engineerId)==NULL_ID ){
+            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE, requestDAO.getAll(NULL_ID , GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID));
         }
         else{
             if(user.getUserRole()== Role.OPERATOR){

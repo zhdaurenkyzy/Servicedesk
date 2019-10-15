@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import static com.epam.servicedesk.util.ConstantForApp.CONNECTION_NOT_FOUND;
+
 public class ConnectionPool {
 
     private static final ConnectionPool UNIQUE_INSTANCE = new ConnectionPool();
@@ -63,8 +65,7 @@ public class ConnectionPool {
             }
         }
         else {
-            System.out.println("error");
+            System.out.println(CONNECTION_NOT_FOUND);
         }
     }
-
 }

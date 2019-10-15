@@ -20,7 +20,7 @@ public class ResolveRequestService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         RequestDAO requestDAO = new RequestDAO();
         Request request = requestDAO.getRequestById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)));
-        request.setStatusId(4);
+        request.setStatusId(RESOLVED_STATUS_ID);
         request.setDecision(validateDescriptionOrDecision(httpServletRequest.getParameter(DECISION_PARAMETER)));
         User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         request.setAuthorOfDecisionId(user.getId());

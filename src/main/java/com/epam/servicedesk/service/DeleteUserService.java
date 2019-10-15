@@ -18,7 +18,6 @@ public class DeleteUserService implements Service {
 
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
         UserDAO userDAO = new UserDAO();
         User user = new User();
         if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
@@ -27,7 +26,7 @@ public class DeleteUserService implements Service {
         User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         if(operator.getUserRole().getId()==OPERATOR_ROLE_ID_DEFAULT) {
             userDAO.deleteUser(user);
-            LOGGER.info("User was deleted userName =" + user.getName());
+            LOGGER.info("User was deleted, userName =" + user.getName() + " by operatorId " + operator.getId());
         }
         httpServletResponse.sendRedirect(LIST_USER_URI);
     }

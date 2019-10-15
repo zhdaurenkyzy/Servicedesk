@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.ProjectDAO;
 import com.epam.servicedesk.entity.Project;
+import com.epam.servicedesk.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.epam.servicedesk.util.ConstantForApp.ID_PARAMETER;
-import static com.epam.servicedesk.util.ConstantForApp.LIST_PROJECT_STATE_TRUE_URI;
+import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class DeleteProjectService implements Service {
@@ -19,14 +19,14 @@ public class DeleteProjectService implements Service {
 
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-
         ProjectDAO projectDAO = new ProjectDAO();
         Project project = new Project();
+        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             project = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
         projectDAO.deleteProject(project);
-        LOGGER.info("Project was deleted  projectId =" + project.getId());
+        LOGGER.info("Project was deleted,  projectId =" + project.getId() + " by operatorId " + operator.getId());
         httpServletResponse.sendRedirect(LIST_PROJECT_STATE_TRUE_URI);
     }
 }

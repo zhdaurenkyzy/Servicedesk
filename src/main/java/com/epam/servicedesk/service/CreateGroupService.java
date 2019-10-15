@@ -13,7 +13,6 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.GroupAndProjectValidation.validateNameGroupOrProject;
 
 public class CreateGroupService implements Service {
-
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         GroupDAO groupDAO = new GroupDAO();
@@ -27,7 +26,6 @@ public class CreateGroupService implements Service {
         else {
             groupDAO.add(group);
             httpServletRequest.getRequestDispatcher(LIST_GROUP_URI).forward(httpServletRequest, httpServletResponse);
-
         }
     }
 }

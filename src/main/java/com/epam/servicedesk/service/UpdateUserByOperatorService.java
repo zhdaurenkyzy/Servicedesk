@@ -4,6 +4,8 @@ import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.exception.ValidationException;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +16,13 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.UserValidation.*;
 
 public class UpdateUserByOperatorService implements Service {
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         UserDAO userDAO = new UserDAO();
         User user = new User();
+        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         setFields(user, httpServletRequest);
         if(httpServletRequest.getParameter(PASSWORD_PARAMETER)==null) {
             user.setPassword(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getPassword());
@@ -28,6 +32,7 @@ public class UpdateUserByOperatorService implements Service {
         }
         user.setUserRole(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getUserRole());
         userDAO.updateUser(user);
+        LOGGER.info("User was updated, userId = " + user.getId() + " by operatorId " + operator.getId());
         httpServletResponse.sendRedirect(LIST_USER_URI);
     }
 

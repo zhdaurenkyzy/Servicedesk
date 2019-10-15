@@ -2,6 +2,8 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,8 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class RemoveUserFromGroupService implements Service {
+    private static final Logger LOGGER = LogManager.getRootLogger();
+
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
         UserDAO userDAO = new UserDAO();
@@ -29,6 +33,9 @@ public class RemoveUserFromGroupService implements Service {
                 selectedUsers.add(userDAO.getById(id));
             }
             userDAO.deleteUserByGroupId(Long.parseLong(currentGroupId), selectedUsers);
+            for (User user:selectedUsers) {
+                LOGGER.info("User " + user.getName() + " was removed from groupId " + currentGroupId );
+            }
         }
         httpServletRequest.getServletContext().getRequestDispatcher(GROUP_CABINET_WITH_ID_URI+currentGroupId).forward(httpServletRequest, httpServletResponse);
     }

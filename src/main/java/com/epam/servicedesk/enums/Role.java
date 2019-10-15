@@ -22,7 +22,6 @@ public enum Role {
         Role[] roles = Role.values();
         return Arrays.stream(roles).filter(r ->
                 r.getId() == id
-        ).findFirst().get(); //orElseGet/orElseThrow examples
+        ).findFirst().get();
     }
-
 }

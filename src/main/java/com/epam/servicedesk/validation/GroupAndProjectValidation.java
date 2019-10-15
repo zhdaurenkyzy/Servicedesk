@@ -8,5 +8,4 @@ public class GroupAndProjectValidation extends AbstractValidation {
     public static String validateNameGroupOrProject(String name) throws ValidationException {
         return validateString(name, GROUP_OR_PROJECT_MAX_LENGTH);
     }
-
 }
