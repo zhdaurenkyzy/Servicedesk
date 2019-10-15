@@ -29,10 +29,12 @@
                       </c:forEach>
                     </div>
      <div class="row" align="right">
+     <c:if test="${user!=null}">
       <p><fmt:message key = "key.youAreLoggedIn" bundle = "${resourceBundle}"/>: <c:out value="${user.getName()}" /></p>
        <form  method="POST" action="/logout">
              <input type="submit" value=<fmt:message key = "key.logout" bundle = "${resourceBundle}"/>>
               </form>
+              </c:if>
               </div>
 
 				<div class="headerContent">
