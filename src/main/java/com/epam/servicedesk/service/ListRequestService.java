@@ -14,8 +14,6 @@ import static com.epam.servicedesk.database.RequestDAO.*;
 import static com.epam.servicedesk.database.RequestDAO.GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID;
 import static com.epam.servicedesk.util.ConstantForApp.*;
 import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
-import static com.epam.servicedesk.validation.AbstractValidation.validateLong;
-
 
 public class ListRequestService implements Service {
 

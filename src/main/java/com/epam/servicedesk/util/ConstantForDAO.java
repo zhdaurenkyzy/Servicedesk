@@ -17,11 +17,11 @@ public final class ConstantForDAO {
             "     LEFT OUTER JOIN user as author_of_creation " +
             "     ON request.REQUEST_AUTHOR_OF_CREATION=author_of_creation.USER_ID " +
             "     LEFT OUTER JOIN user as author_of_decision " +
-            "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID";
+            "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID ORDER BY request.REQUEST_ID DESC";
 
     public static final String ADD_GROUP = "INSERT INTO ENGINEER_GROUP (GROUP_NAME) VALUES (?)";
     public static final String GET_GROUP_BY_NAME = "SELECT * FROM ENGINEER_GROUP WHERE GROUP_NAME=?";
-    public static final String GET_ALL_GROUP = "SELECT * FROM ENGINEER_GROUP";
+    public static final String GET_ALL_GROUP = "SELECT * FROM ENGINEER_GROUP ORDER BY GROUP_NAME";
     public static final String GET_GROUP_BY_ID = "SELECT * FROM ENGINEER_GROUP WHERE GROUP_ID=?";
     public static final String UPDATE_GROUP = "UPDATE ENGINEER_GROUP SET GROUP_NAME =? WHERE GROUP_ID=?";
     public static final String DELETE_GROUP = "DELETE FROM ENGINEER_GROUP WHERE GROUP_ID=?";
@@ -43,7 +43,7 @@ public final class ConstantForDAO {
     public static final String ADD_PROJECT = "INSERT INTO PROJECT (PROJECT_NAME, PROJECT_STATE) VALUES (?, true)";
     public static final String GET_PROJECT_BY_ID = "SELECT * FROM PROJECT WHERE PROJECT_ID=?";
     public static final String GET_PROJECT_BY_NAME = "SELECT * FROM PROJECT WHERE PROJECT_NAME=?";
-    public static final String GET_ALL_PROJECT_BY_STATE = "SELECT * FROM PROJECT WHERE PROJECT_STATE=?";
+    public static final String GET_ALL_PROJECT_BY_STATE = "SELECT * FROM PROJECT WHERE PROJECT_STATE=? ORDER BY PROJECT_NAME";
     public static final String UPDATE_PROJECT = "UPDATE PROJECT SET PROJECT_NAME=? WHERE PROJECT_ID=?";
     public static final String CHANGE_PROJECT_STATE = "UPDATE PROJECT SET PROJECT_STATE = ? WHERE PROJECT_ID=?";
     public static final String DELETE_PROJECT = "DELETE FROM PROJECT WHERE PROJECT_ID=?";
@@ -65,7 +65,7 @@ public final class ConstantForDAO {
     public static final String DELETE_REQUEST = "DELETE FROM REQUEST WHERE REQUEST_ID=?";
     public static final String ADD_USER = "INSERT INTO USER(USER_NAME, USER_POSITION, USER_PHONE, USER_MOBILE, USER_MAIL," +
             " USER_LOGIN, USER_PASSWORD, USER_ROLE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    public static final String GET_ALL_USERS = "SELECT * FROM USER";
+    public static final String GET_ALL_USERS = "SELECT * FROM USER ORDER BY USER_NAME";
     public static final String GET_USER_BY_ID = "SELECT * FROM USER WHERE USER_ID=?";
     public static final String GET_USER_BY_LOGIN = "SELECT * FROM USER WHERE USER_LOGIN=?";
     public static final String UPDATE_USER = "UPDATE USER SET USER_NAME=?, USER_POSITION=?, USER_PHONE=?, USER_MOBILE=?, USER_MAIL=?," +

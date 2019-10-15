@@ -29,13 +29,13 @@ public class RequestDAO {
             "     LEFT OUTER JOIN user as author_of_creation " +
             "     ON request.REQUEST_AUTHOR_OF_CREATION=author_of_creation.USER_ID " +
             "     LEFT OUTER JOIN user as author_of_decision " +
-            "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID";
+            "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID ";
 
-    public static final String GET_VIEW_ALL_REQUEST_CLIENT_ID = view + " WHERE request.CLIENT_USER_ID = ?";
-    public static final String GET_VIEW_ALL_REQUEST_BY_AUTHOR_OF_CREATION_ID = view + " WHERE request.REQUEST_AUTHOR_OF_CREATION = ?";
-    public static final String GET_VIEW_ALL_REQUEST_BY_STATUS_ID = view + " WHERE (request.CLIENT_USER_ID=? or request.ENGINEER_USER_ID=? or request.REQUEST_AUTHOR_OF_CREATION= ?) and request.REQUEST_STATUS_ID=?";
-    public static final String GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID = view + " WHERE request.ENGINEER_USER_ID = ?";
-    public static final String GET_VIEW_ALL_REQUEST = view + " WHERE request.CLIENT_USER_ID=?  or request.ENGINEER_USER_ID =? or request.REQUEST_AUTHOR_OF_CREATION=?";
+    public static final String GET_VIEW_ALL_REQUEST_CLIENT_ID = view + " WHERE request.CLIENT_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_AUTHOR_OF_CREATION_ID = view + " WHERE request.REQUEST_AUTHOR_OF_CREATION = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_STATUS_ID = view + " WHERE (request.CLIENT_USER_ID=? or request.ENGINEER_USER_ID=? or request.REQUEST_AUTHOR_OF_CREATION= ?) and request.REQUEST_STATUS_ID=? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID = view + " WHERE request.ENGINEER_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST = view + " WHERE request.CLIENT_USER_ID=?  or request.ENGINEER_USER_ID =? or request.REQUEST_AUTHOR_OF_CREATION=? ORDER BY request.REQUEST_ID DESC";
 
     ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
