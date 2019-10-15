@@ -21,6 +21,7 @@ public class ServicedeskController extends HttpServlet {
         Factory factory = Factory.getInstance();
         String stringUri = httpServletRequest.getRequestURI();
         Service service = factory.getService(stringUri);
+        System.out.println(stringUri);
         try {
             service.execute(httpServletRequest, httpServletResponse);
         } catch (ValidationException e) {

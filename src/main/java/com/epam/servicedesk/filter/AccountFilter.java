@@ -20,7 +20,11 @@ public class AccountFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String servletPath = httpServletRequest.getServletPath();
-        if(servletPath.equals(LOGIN_JSP)){
+        if(servletPath.equals(LOGIN_JSP)||servletPath.equals(INDEX_JSP)){
+            if (httpServletRequest.getSession().getAttribute(USER_PARAMETER) != null) {
+                httpServletResponse.sendRedirect(USER_CABINET_JSP);
+                return;
+            }
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
@@ -29,6 +33,7 @@ public class AccountFilter implements Filter {
                 httpServletResponse.sendRedirect(LOGIN_JSP);
                 return;
             }
+
             if (!SecurityUtils.hasPermission(httpServletRequest)) {
                 httpServletRequest.getSession().setAttribute(MESSAGE, ACCESS_DENIED);
                 httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);

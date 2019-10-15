@@ -135,6 +135,7 @@ public class ConstantForApp {
     public static final String DECISION_CABINET_JSP = "/jsp/decisionCabinet.jsp";
     public static final String EDIT_USER_BY_OPERATOR_JSP = "/jsp/editUserByOperator.jsp";
     public static final String GROUP_CABINET_JSP = "/jsp/groupCabinet.jsp";
+    public static final String INDEX_JSP = "/index.jsp";
     public static final String LIST_GROUP_JSP = "/jsp/listGroup.jsp";
     public static final String LIST_REQUEST_JSP = "/jsp/listRequest.jsp";
     public static final String LIST_PROJECT_JSP = "/jsp/listProject.jsp";
