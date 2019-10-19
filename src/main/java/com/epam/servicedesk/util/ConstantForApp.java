@@ -76,9 +76,13 @@ public class ConstantForApp {
     public static final String REQUEST_ID_PARAMETER = "requestId";
     public static final String REQUEST_PARAMETER = "request";
     public static final String REQUEST_STATES_ATTRIBUTE = "requestStates";
+    public static final String REQUEST_THEME_PARAMETER = "requestTheme";
+    public static final String REQUEST_STATUS_PARAMETER = "requestStatus";
     public static final String CHARSET_REQUEST_ENCODING = "requestEncoding";
     public static final String REPEAT_PASSWORD_PARAMETER = "repeatPassword";
     public static final String ROLE_PARAMETER = "role";
+    public static final String SEARCH_CRITERIA_PARAMETER = "searchCriteria";
+    public static final String SEARCH_TEXT_PARAMETER = "searchText";
     public static final String SELECT_CLIENT_ID_PARAMETER = "cid";
     public static final String SELECT_GROUP_PARAMETER = "selectGroup";
     public static final String SELECT_ENGINEER_ID_PARAMETER = "eid";
@@ -134,6 +138,7 @@ public class ConstantForApp {
     public static final String REMOVE_USER_FROM_GROUP_URI = "/removeUserFromGroup";
     public static final String REMOVE_USER_PROJECT_URI = "/removeUserProject";
     public static final String RESOLVE_REQUEST_URI = "/resolveRequest";
+    public static final String SEARCH_REQUEST_URI = "/searchRequest";
     public static final String SET_LANGUAGE_URI = "/setLanguage";
     public static final String UPDATE_GROUP_NAME_URI = "/updateGroupName";
     public static final String UPDATE_PROJECT_URI = "/updateProject";

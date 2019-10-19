@@ -13,7 +13,7 @@ import java.util.List;
 import static com.epam.servicedesk.util.ConstantForDAO.*;
 
 public class RequestDAO {
-    private static String view = "SELECT request.REQUEST_ID, request.REQUEST_THEME, status.STATUS_NAME ," +
+    private static String VIEW_REQUEST_TABLE = "SELECT request.REQUEST_ID, request.REQUEST_THEME, status.STATUS_NAME ," +
             " request.REQUEST_PRIORITY_ID, engineer_group.GROUP_NAME, engineer.USER_NAME as ENGINEER_NAME, project.PROJECT_NAME, client.USER_NAME as CLIENT_NAME," +
             " author_of_creation.USER_NAME as AUTHOR_OF_CREATION_NAME, request.REQUEST_DATE_OF_CREATION, author_of_decision.USER_NAME as AUTHOR_OF_DECISION_NAME , request.REQUEST_DATE_OF_DECISION " +
             " FROM  request  LEFT OUTER JOIN status" +
@@ -31,11 +31,15 @@ public class RequestDAO {
             "     LEFT OUTER JOIN user as author_of_decision " +
             "     ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID ";
 
-    public static final String GET_VIEW_ALL_REQUEST_CLIENT_ID = view + " WHERE request.CLIENT_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
-    public static final String GET_VIEW_ALL_REQUEST_BY_AUTHOR_OF_CREATION_ID = view + " WHERE request.REQUEST_AUTHOR_OF_CREATION = ? ORDER BY request.REQUEST_ID DESC";
-    public static final String GET_VIEW_ALL_REQUEST_BY_STATUS_ID = view + " WHERE (request.CLIENT_USER_ID=? or request.ENGINEER_USER_ID=? or request.REQUEST_AUTHOR_OF_CREATION= ?) and request.REQUEST_STATUS_ID=? ORDER BY request.REQUEST_ID DESC";
-    public static final String GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID = view + " WHERE request.ENGINEER_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
-    public static final String GET_VIEW_ALL_REQUEST = view + " WHERE request.CLIENT_USER_ID=?  or request.ENGINEER_USER_ID =? or request.REQUEST_AUTHOR_OF_CREATION=? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_CLIENT_ID = VIEW_REQUEST_TABLE + " WHERE request.CLIENT_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_AUTHOR_OF_CREATION_ID = VIEW_REQUEST_TABLE + " WHERE request.REQUEST_AUTHOR_OF_CREATION = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_STATUS_ID = VIEW_REQUEST_TABLE + " WHERE (request.CLIENT_USER_ID=? or request.ENGINEER_USER_ID=? or request.REQUEST_AUTHOR_OF_CREATION= ?) and request.REQUEST_STATUS_ID=? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID = VIEW_REQUEST_TABLE + " WHERE request.ENGINEER_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
+    public static final String GET_VIEW_ALL_REQUEST = VIEW_REQUEST_TABLE + " WHERE request.CLIENT_USER_ID=?  or request.ENGINEER_USER_ID =? or request.REQUEST_AUTHOR_OF_CREATION=? ORDER BY request.REQUEST_ID DESC";
+    public static final String SEARCH_BY_REQUEST_ID = VIEW_REQUEST_TABLE + "WHERE request.REQUEST_ID LIKE CONCAT('%', ? ,'%')";
+    public static final String SEARCH_BY_REQUEST_THEME = VIEW_REQUEST_TABLE + "WHERE request.REQUEST_THEME LIKE CONCAT('%', ? ,'%')";
+    public static final String SEARCH_BY_STATUS_NAME = VIEW_REQUEST_TABLE + "WHERE status.STATUS_NAME LIKE CONCAT('%', ? ,'%')";
+
 
     ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
@@ -259,6 +263,7 @@ public class RequestDAO {
         connectionPool.putback(connection);
         return requestStates;
     }
+
     public List<RequestState> getAll(long id, String sql) {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
@@ -304,7 +309,7 @@ public class RequestDAO {
         return requestStates;
     }
 
-    public List<RequestState> getAllRequestSts(long userId,long statusId, String sql) {
+    public List<RequestState> getAllRequestSts(long userId, long statusId, String sql) {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
@@ -315,6 +320,48 @@ public class RequestDAO {
             preparedStatement.setLong(2, userId);
             preparedStatement.setLong(3, userId);
             preparedStatement.setLong(4, statusId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                requestState = new RequestState();
+                requestStateResultSet(requestState, resultSet);
+                requestStates.add(requestState);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connectionPool.putback(connection);
+        return requestStates;
+    }
+
+    public List<RequestState> searchById(long id, String sql) {
+        Connection connection = connectionPool.retrieve();
+        List<RequestState> requestStates = new ArrayList<>();
+        RequestState requestState = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                requestState = new RequestState();
+                requestStateResultSet(requestState, resultSet);
+                requestStates.add(requestState);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connectionPool.putback(connection);
+        return requestStates;
+    }
+
+    public List<RequestState> searchString(String string, String sql) {
+        Connection connection = connectionPool.retrieve();
+        List<RequestState> requestStates = new ArrayList<>();
+        RequestState requestState = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, string);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 requestState = new RequestState();

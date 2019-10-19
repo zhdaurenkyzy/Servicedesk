@@ -66,8 +66,25 @@
 
 				</div>
 			</div>
-			<!--Таблица-->
-            					<h2>Table</h2>
+			 <form action="/searchRequest">
+             <table class="bordered">
+
+                      <tr>
+                    <td>
+                   <fmt:message key = "key.requestId" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" checked value="requestId">
+                    </td>
+                     <td>
+                    <fmt:message key = "key.theme" bundle = "${resourceBundle}"/> <input name="searchCriteria" type="radio" value="requestTheme">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.status" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="requestStatus">
+                     </td>
+                     </tr>
+                     </table>
+                     <input type="text" name="searchText">
+                <input type="submit" value=<fmt:message key = "key.search" bundle = "${resourceBundle}"/>></p>
+              </form>
+			<!--Table-->
             					<div class="mobile">
             						<table class="bordered">
             							<thead>
@@ -91,8 +108,7 @@
 
             									<c:forEach var="requestState" items="${requestStates}">
                                                            <tr>
-
-                                                                   <td>
+                                                                  <td>
                                                                    <c:out value="${requestState.getRequestId()}"/>
                                                                    </td>
                                                                     <td>

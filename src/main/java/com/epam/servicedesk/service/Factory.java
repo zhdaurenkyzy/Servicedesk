@@ -50,6 +50,7 @@ public class Factory  {
         STRING_SERVICE_MAP.put(UPDATE_REQUEST_URI, new UpdateRequestService());
         STRING_SERVICE_MAP.put(UPDATE_USER_URI, new UpdateUserService());
         STRING_SERVICE_MAP.put(UPDATE_USER_BY_OPERATOR_URI, new UpdateUserByOperatorService());
+        STRING_SERVICE_MAP.put(SEARCH_REQUEST_URI, new SearchRequestService());
     }
 
     public static Factory getInstance(){

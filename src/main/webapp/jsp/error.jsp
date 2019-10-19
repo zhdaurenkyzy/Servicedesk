@@ -10,8 +10,6 @@
 <custom:customIf displayBody="true">
 		<p>Error</p>
 	</custom:customIf>
-
-
 	<c:if test="${message == 1}"><fmt:message key = "key.incorrectFormat" bundle = "${resourceBundle}"/></c:if>
 	<c:if test="${message == 2}"><fmt:message key = "key.wrongLoginOrPass" bundle = "${resourceBundle}"/></c:if>
 	<c:if test="${message == 3}"><fmt:message key = "key.groupAlreadyExists" bundle = "${resourceBundle}"/></c:if>

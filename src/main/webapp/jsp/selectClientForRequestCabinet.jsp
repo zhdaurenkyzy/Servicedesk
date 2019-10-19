@@ -28,7 +28,7 @@ alert($('select[name="cid"]').val());
 
 <p> <input id="idField" type="hidden" name="requestId" value = <c:out value="${request.getId()}"/>></p>
   <p> <input  type="hidden" name="requestName" value = <c:out value="${request}"/>></p>
-<fmt:message key = "key.client" bundle = "${resourceBundle}"/>: <c:out value="${user.getName()}" />*:<select class="client" name="cid"required size="1" >
+<fmt:message key = "key.client" bundle = "${resourceBundle}"/>:*:<select class="client" name="cid"required size="1" >
              <option <c:if test="${request.getProjectId()==null}"> disabled </c:if> ><fmt:message key = "key.chooseClient" bundle = "${resourceBundle}"/></option>
 
              <c:forEach var="client" items="${clients}">

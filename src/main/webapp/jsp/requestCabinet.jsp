@@ -127,9 +127,7 @@ $(".engineer").html(data);
 });
 $(".group").on("change", function (){
 var id = $(".group").val();
-if(id==0){
 
-}
 $.ajax({
 type:"POST",
 url:"/engineerRequest",
@@ -169,6 +167,7 @@ $(".client").html(data);
 $(".project").on("change", function (){
 var idProject = $(".project").val();
 if(idProject==0){
+
 }
 $.ajax({
 type:"POST",

@@ -21,7 +21,7 @@ public class UpdateUserService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
         UserDAO userDAO = new UserDAO();
-        User user = new User();
+        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         user.setName(validateName(httpServletRequest.getParameter(NAME_PARAMETER)));
         user.setPosition(validatePosition(httpServletRequest.getParameter(POSITION_PARAMETER)));
         user.setPhone(validatePhone(httpServletRequest.getParameter(PHONE_PARAMETER)));
@@ -29,9 +29,8 @@ public class UpdateUserService implements Service {
         user.setMail(validateMail(httpServletRequest.getParameter(MAIL_PARAMETER)));
         String password = validatePassword(httpServletRequest.getParameter(PASSWORD_PARAMETER));
         String repeatPassword = validatePassword(httpServletRequest.getParameter(REPEAT_PASSWORD_PARAMETER));
-        user.setUserRole(((User) httpServletRequest.getSession().getAttribute(USER_PARAMETER)).getUserRole());
-        User currentUser = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        user.setId((currentUser).getId());
+        user.setUserRole(user.getUserRole());
+        user.setId(user.getId());
         if (((password != null) & (repeatPassword != null)) & (password.equals(repeatPassword))) {
             user.setPassword(DigestUtils.md5Hex(password));
             userDAO.updateUser(user);
