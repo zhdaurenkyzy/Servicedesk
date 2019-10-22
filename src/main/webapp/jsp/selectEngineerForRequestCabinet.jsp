@@ -32,7 +32,5 @@ alert($('select[name="eid"]').val());
              </select>
              </p>
    <span class = "engineer"></span>
-
-
  </body>
  </html>

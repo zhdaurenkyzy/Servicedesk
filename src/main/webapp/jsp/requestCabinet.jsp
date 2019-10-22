@@ -113,7 +113,7 @@
             </c:forEach>
          </select>
          </p>
-   <c:if test="${user.getUserRole() != role}">
+   <c:if test="${user.getUserRole().getId()<=1}">
 <script type = "text/javascript">
 $(document).ready(function (){
 var id=$(".group").val();
@@ -180,7 +180,7 @@ $(".client").html(data);
 });
 });
 </script>
-<c:if test="${user.getUserRole() != role}">
+<c:if test="${user.getUserRole().getId()<=1}">
 <p><fmt:message key = "key.projectName" bundle = "${resourceBundle}"/>* :<select class="project" required size="1" name="selectProject">
 
         <option name="idProject" <c:if test="${project.isState()==false}"> selected </c:if> value=null><fmt:message key = "key.allClient" bundle = "${resourceBundle}"/></option>
@@ -192,6 +192,7 @@ $(".client").html(data);
 
 <span class = "client"></span>
 </c:if>
+
 <p><fmt:message key = "key.theme" bundle = "${resourceBundle}"/>: <input id="themeField" type="text"  name="themeName" required value=<c:out value="${request.getTheme()}"/>></p>
 <p><fmt:message key = "key.description" bundle = "${resourceBundle}"/><Br>
    <textarea name="description" cols="100" rows="10"><c:out value="${request.getDescription()}"/></textarea></p>

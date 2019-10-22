@@ -66,18 +66,45 @@
 
 				</div>
 			</div>
-			 <form action="/searchRequest">
+			 <form method="POST" action="/searchRequest">
              <table class="bordered">
 
                       <tr>
                     <td>
-                   <fmt:message key = "key.requestId" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" checked value="requestId">
+                   <fmt:message key = "key.requestId" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" checked value="request.REQUEST_ID">
                     </td>
                      <td>
-                    <fmt:message key = "key.theme" bundle = "${resourceBundle}"/> <input name="searchCriteria" type="radio" value="requestTheme">
+                    <fmt:message key = "key.theme" bundle = "${resourceBundle}"/> <input name="searchCriteria" type="radio" value="request.REQUEST_THEME">
+                     </td>
+                      <td>
+                      <fmt:message key = "key.priorities" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="request.REQUEST_PRIORITY_ID">
+                      </td>
+                     <td>
+                     <fmt:message key = "key.status" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="status.STATUS_NAME">
                      </td>
                      <td>
-                     <fmt:message key = "key.status" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="requestStatus">
+                     <fmt:message key = "key.groups" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="engineer_group.GROUP_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.engineers" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="engineer.USER_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.projects" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="project.PROJECT_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.clients" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="client.USER_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.authorOfCreation" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="author_of_creation.USER_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.dateOfCreation" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="request.REQUEST_DATE_OF_CREATION">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.AuthorOfDecision" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="author_of_decision.USER_NAME">
+                     </td>
+                     <td>
+                     <fmt:message key = "key.dateOfDecision" bundle = "${resourceBundle}"/><input name="searchCriteria" type="radio" value="request.REQUEST_DATE_OF_DECISION">
                      </td>
                      </tr>
                      </table>

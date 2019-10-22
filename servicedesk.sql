@@ -157,6 +157,103 @@ INSERT INTO `servicedesk`.`user_project` (`USER_ID`, `PROJECT_ID`) VALUES ('1', 
 INSERT INTO `servicedesk`.`user_project` (`USER_ID`, `PROJECT_ID`) VALUES ('6', '2');
 INSERT INTO `servicedesk`.`user_project` (`USER_ID`, `PROJECT_ID`) VALUES ('7', '3');
 
+USE `servicedesk`;
+DROP procedure IF EXISTS `searchByUserId`;
+
+DELIMITER $$
+USE `servicedesk`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByUserId`(IN column_name varchar(45), IN user_id bigint, IN status_id bigint, IN search_criteria varchar(45), IN searchString varchar(45), IN searchId bigint)
+BEGIN
+SELECT request.REQUEST_ID, request.REQUEST_THEME, status.STATUS_NAME,
+            request.REQUEST_PRIORITY_ID, engineer_group.GROUP_NAME, engineer.USER_NAME as ENGINEER_NAME, project.PROJECT_NAME, client.USER_NAME as CLIENT_NAME,
+            author_of_creation.USER_NAME as AUTHOR_OF_CREATION_NAME, request.REQUEST_DATE_OF_CREATION, author_of_decision.USER_NAME as AUTHOR_OF_DECISION_NAME , request.REQUEST_DATE_OF_DECISION
+            FROM  request  LEFT OUTER JOIN status
+            ON  request.REQUEST_STATUS_ID =status.STATUS_ID 
+		    LEFT OUTER JOIN engineer_group 
+             ON  request.ENGINEER_GROUP_ID=engineer_group.GROUP_ID 
+             LEFT OUTER JOIN user as engineer
+             ON request.ENGINEER_USER_ID=engineer.USER_ID 
+             LEFT OUTER JOIN project 
+              ON  request.PROJECT_ID=project.PROJECT_ID 
+             LEFT OUTER JOIN user as client
+              ON request.CLIENT_USER_ID=client.USER_ID 
+             LEFT OUTER JOIN user as author_of_creation 
+              ON request.REQUEST_AUTHOR_OF_CREATION=author_of_creation.USER_ID
+              LEFT OUTER JOIN user as author_of_decision
+              ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID where case column_name when
+              'request.REQUEST_AUTHOR_OF_CREATION' then request.REQUEST_AUTHOR_OF_CREATION = user_id
+              when
+              'request.ENGINEER_USER_ID' then request.ENGINEER_USER_ID = user_id
+               when
+              'request.CLIENT_USER_ID' then request.CLIENT_USER_ID = user_id
+               when
+              'user' then request.CLIENT_USER_ID=user_id or request.ENGINEER_USER_ID = user_id or request.REQUEST_AUTHOR_OF_CREATION=user_id
+               when
+              'request.REQUEST_STATUS_ID' then ((request.CLIENT_USER_ID=user_id or request.ENGINEER_USER_ID = user_id or request.REQUEST_AUTHOR_OF_CREATION=user_id) and (request.REQUEST_STATUS_ID=status_id)) 
+              end
+               and 
+             (case search_criteria when 'request.REQUEST_THEME' then request.REQUEST_THEME
+             when 'status.STATUS_NAME' then status.STATUS_NAME 
+             when 'engineer_group.GROUP_NAME' then engineer_group.GROUP_NAME 
+             when 'engineer.USER_NAME' then engineer.USER_NAME
+             when 'project.PROJECT_NAME' then project.PROJECT_NAME
+             when 'client.USER_NAME' then client.USER_NAME
+             when 'author_of_creation.USER_NAME' then author_of_creation.USER_NAME
+		     when 'author_of_decision.USER_NAME' then author_of_decision.USER_NAME
+             when 'request.REQUEST_DATE_OF_CREATION' then request.REQUEST_DATE_OF_CREATION
+             when 'request.REQUEST_DATE_OF_DECISION' then request.REQUEST_DATE_OF_DECISION
+             end like concat('%', searchString, '%')
+             or case search_criteria when 'request.REQUEST_PRIORITY_ID' then request.REQUEST_PRIORITY_ID
+             when 'request.REQUEST_ID' then request.REQUEST_ID
+end like concat('%', searchId, '%')) ORDER BY request.REQUEST_ID DESC;
+END$$
+
+DELIMITER ;
+
+USE `servicedesk`;
+DROP procedure IF EXISTS `searchByOperator`;
+
+DELIMITER $$
+USE `servicedesk`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `searchByOperator`(IN search_criteria varchar(45), IN searchString varchar(45), IN searchId bigint)
+BEGIN
+SELECT request.REQUEST_ID, request.REQUEST_THEME, status.STATUS_NAME,
+            request.REQUEST_PRIORITY_ID, engineer_group.GROUP_NAME, engineer.USER_NAME as ENGINEER_NAME, project.PROJECT_NAME, client.USER_NAME as CLIENT_NAME,
+            author_of_creation.USER_NAME as AUTHOR_OF_CREATION_NAME, request.REQUEST_DATE_OF_CREATION, author_of_decision.USER_NAME as AUTHOR_OF_DECISION_NAME , request.REQUEST_DATE_OF_DECISION
+            FROM  request  LEFT OUTER JOIN status
+           
+           ON  request.REQUEST_STATUS_ID =status.STATUS_ID 
+            LEFT OUTER JOIN engineer_group 
+             ON  request.ENGINEER_GROUP_ID=engineer_group.GROUP_ID 
+             LEFT OUTER JOIN user as engineer
+             ON request.ENGINEER_USER_ID=engineer.USER_ID 
+             LEFT OUTER JOIN project 
+              ON  request.PROJECT_ID=project.PROJECT_ID 
+             LEFT OUTER JOIN user as client
+              ON request.CLIENT_USER_ID=client.USER_ID 
+             LEFT OUTER JOIN user as author_of_creation 
+              ON request.REQUEST_AUTHOR_OF_CREATION=author_of_creation.USER_ID
+              LEFT OUTER JOIN user as author_of_decision
+              ON request.REQUEST_AUTHOR_OF_DECISION=author_of_decision.USER_ID where 
+			case search_criteria when 'request.REQUEST_THEME' then request.REQUEST_THEME
+             when 'status.STATUS_NAME' then status.STATUS_NAME 
+             when 'engineer_group.GROUP_NAME' then engineer_group.GROUP_NAME 
+             when 'engineer.USER_NAME' then engineer.USER_NAME
+             when 'project.PROJECT_NAME' then project.PROJECT_NAME
+             when 'client.USER_NAME' then client.USER_NAME
+             when 'author_of_creation.USER_NAME' then author_of_creation.USER_NAME
+		     when 'author_of_decision.USER_NAME' then author_of_decision.USER_NAME
+             when 'request.REQUEST_DATE_OF_CREATION' then request.REQUEST_DATE_OF_CREATION
+             when 'request.REQUEST_DATE_OF_DECISION' then request.REQUEST_DATE_OF_DECISION
+             end like concat('%', searchString, '%')
+             or case search_criteria when 'request.REQUEST_PRIORITY_ID' then request.REQUEST_PRIORITY_ID
+             when 'request.REQUEST_ID' then request.REQUEST_ID
+end like concat('%', searchId, '%') ORDER BY request.REQUEST_ID DESC;
+END$$
+
+DELIMITER ;
+
+
 
 
 

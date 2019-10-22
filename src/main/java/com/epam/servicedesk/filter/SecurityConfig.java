@@ -23,6 +23,7 @@ public class SecurityConfig {
         urlPatternsGuest.add(SELECT_CLIENT_FOR_REQUEST_CABINET_JSP);
         urlPatternsGuest.add(SELECT_ENGINEER_FOR_REQUEST_CABINET_JSP);
         urlPatternsGuest.add(UPDATE_USER_URI);
+        urlPatternsGuest.add(SEARCH_REQUEST_URI);
         mapConfig.put(Role.GUEST, urlPatternsGuest);
         List<String> urlPatternsClient = new ArrayList<>();
         setUrl(urlPatternsGuest, urlPatternsClient);

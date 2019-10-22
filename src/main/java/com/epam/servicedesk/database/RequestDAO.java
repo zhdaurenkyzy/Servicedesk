@@ -36,10 +36,6 @@ public class RequestDAO {
     public static final String GET_VIEW_ALL_REQUEST_BY_STATUS_ID = VIEW_REQUEST_TABLE + " WHERE (request.CLIENT_USER_ID=? or request.ENGINEER_USER_ID=? or request.REQUEST_AUTHOR_OF_CREATION= ?) and request.REQUEST_STATUS_ID=? ORDER BY request.REQUEST_ID DESC";
     public static final String GET_VIEW_ALL_REQUEST_BY_ENGINEER_ID = VIEW_REQUEST_TABLE + " WHERE request.ENGINEER_USER_ID = ? ORDER BY request.REQUEST_ID DESC";
     public static final String GET_VIEW_ALL_REQUEST = VIEW_REQUEST_TABLE + " WHERE request.CLIENT_USER_ID=?  or request.ENGINEER_USER_ID =? or request.REQUEST_AUTHOR_OF_CREATION=? ORDER BY request.REQUEST_ID DESC";
-    public static final String SEARCH_BY_REQUEST_ID = VIEW_REQUEST_TABLE + "WHERE request.REQUEST_ID LIKE CONCAT('%', ? ,'%')";
-    public static final String SEARCH_BY_REQUEST_THEME = VIEW_REQUEST_TABLE + "WHERE request.REQUEST_THEME LIKE CONCAT('%', ? ,'%')";
-    public static final String SEARCH_BY_STATUS_NAME = VIEW_REQUEST_TABLE + "WHERE status.STATUS_NAME LIKE CONCAT('%', ? ,'%')";
-
 
     ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
@@ -98,7 +94,7 @@ public class RequestDAO {
         requestState.setAuthorOfDecisionName(resultSet.getString("AUTHOR_OF_DECISION_NAME"));
         if (resultSet.getTimestamp("REQUEST_DATE_OF_DECISION") != null) {
             requestState.setRequestDateOfDecision(LocalDateTime.from(resultSet.getTimestamp("REQUEST_DATE_OF_DECISION").toLocalDateTime()));
-       }
+        }
         return requestState;
     }
 
@@ -153,21 +149,21 @@ public class RequestDAO {
         PreparedStatement preparedStatement = null;
         try {
             connection.setAutoCommit(false);
-        try {
-            historyDAO.fieldComparisonAndAddHistory(request, connection, user);
-            preparedStatement = connection.prepareStatement(ADD_DECISION);
-            preparedStatement.setString(1, request.getDecision());
-            preparedStatement.setLong(2, request.getAuthorOfDecisionId());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(request.getDateOfDecision()));
-            preparedStatement.setLong(4, request.getStatusId());
-            preparedStatement.setLong(5, request.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            connection.rollback();
-            e.printStackTrace();
-        } finally {
-            connection.setAutoCommit(true);
-        }
+            try {
+                historyDAO.fieldComparisonAndAddHistory(request, connection, user);
+                preparedStatement = connection.prepareStatement(ADD_DECISION);
+                preparedStatement.setString(1, request.getDecision());
+                preparedStatement.setLong(2, request.getAuthorOfDecisionId());
+                preparedStatement.setTimestamp(3, Timestamp.valueOf(request.getDateOfDecision()));
+                preparedStatement.setLong(4, request.getStatusId());
+                preparedStatement.setLong(5, request.getId());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                connection.rollback();
+                e.printStackTrace();
+            } finally {
+                connection.setAutoCommit(true);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -264,7 +260,7 @@ public class RequestDAO {
         return requestStates;
     }
 
-    public List<RequestState> getAll(long id, String sql) {
+    public List<RequestState> getAllByUser(long id, String sql) {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
@@ -309,7 +305,7 @@ public class RequestDAO {
         return requestStates;
     }
 
-    public List<RequestState> getAllRequestSts(long userId, long statusId, String sql) {
+    public List<RequestState> getAllRequestByStatus(long userId, long statusId, String sql) {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
@@ -363,6 +359,57 @@ public class RequestDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, string);
             ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                requestState = new RequestState();
+                requestStateResultSet(requestState, resultSet);
+                requestStates.add(requestState);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connectionPool.putback(connection);
+        return requestStates;
+    }
+
+    public List<RequestState> search(String column, long userId, long statusId, String searchCriteria, String searchString, long searchId) {
+        Connection connection = connectionPool.retrieve();
+        List<RequestState> requestStates = new ArrayList<>();
+        RequestState requestState = null;
+        CallableStatement cstmt = null;
+        String sqlCall = "{call servicedesk.searchByUserId(?, ?, ?, ?, ?, ?)}";
+        try {
+            cstmt = connection.prepareCall(sqlCall);
+            cstmt.setString(1, column);
+            cstmt.setLong(2, userId);
+            cstmt.setLong(3, statusId);
+            cstmt.setString(4, searchCriteria);
+            cstmt.setString(5, searchString);
+            cstmt.setLong(6, searchId);
+            ResultSet resultSet = cstmt.executeQuery();
+            while (resultSet.next()) {
+                requestState = new RequestState();
+                requestStateResultSet(requestState, resultSet);
+                requestStates.add(requestState);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connectionPool.putback(connection);
+        return requestStates;
+    }
+
+    public List<RequestState> searchByOperator(String searchCriteria, String searchString, long searchId) {
+        Connection connection = connectionPool.retrieve();
+        List<RequestState> requestStates = new ArrayList<>();
+        RequestState requestState = null;
+        CallableStatement cstmt = null;
+        String sqlCall = "{call servicedesk.searchByOperator(?, ?, ?)}";
+        try {
+            cstmt = connection.prepareCall(sqlCall);
+            cstmt.setString(1, searchCriteria);
+            cstmt.setString(2, searchString);
+            cstmt.setLong(3, searchId);
+            ResultSet resultSet = cstmt.executeQuery();
             while (resultSet.next()) {
                 requestState = new RequestState();
                 requestStateResultSet(requestState, resultSet);

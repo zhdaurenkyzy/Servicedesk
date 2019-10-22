@@ -19,13 +19,13 @@ public class ConstantForApp {
     public static final long LANGUAGE_ID_DEFAULT = 1;
     public static final int MAX_LENGTH_OF_STRING = 24;
     public static final int MIN_LENGTH_OF_PASSWORD = 6;
-    public static final int MIN_LENGTH_OF_STRING = 1;
     public static final int MIN_LENGTH_OF_LOGIN = 4;
     public static final long MODE_WEB_FORM = 4;
     public static final int NAME_MAX_LENGTH = 45;
     public static final long NULL_ID = 0;
     public static final long OPERATOR_ROLE_ID_DEFAULT = 0;
     public static final long RESOLVED_STATUS_ID = 4;
+    public static final long CLIENT_ROLE_ID = 2;
     public static final int PHONE_MAX_LENGTH = 20;
     public static final int POSITION_MAX_LENGTH = 60;
     public static final int THEME_MAX_LENGTH = 150;
@@ -36,6 +36,7 @@ public class ConstantForApp {
     public static final String CLIENT_ID_PARAMETER = "clientId";
     public static final String CLIENT_LIST_PARAMETER = "clients";
     public static final String CONNECTION_NOT_FOUND = "Connection not found";
+    public static final String COLUMN_FOR_SEARCH = "columnForSearch";
     public static final String DECISION_PARAMETER = "decision";
     public static final String DESCRIPTION_PARAMETER = "description";
     public static final String ENGINEER_ID_PARAMETER = "engineerId";
@@ -79,6 +80,10 @@ public class ConstantForApp {
     public static final String REQUEST_THEME_PARAMETER = "requestTheme";
     public static final String REQUEST_STATUS_PARAMETER = "requestStatus";
     public static final String CHARSET_REQUEST_ENCODING = "requestEncoding";
+    public static final String REQUEST_CLIENT_USER_ID = "request.CLIENT_USER_ID";
+    public static final String REQUEST_STATUS_ID = "request.REQUEST_STATUS_ID";
+    public static final String REQUEST_AUTHOR_OF_CREATION = "request.REQUEST_AUTHOR_OF_CREATION";
+    public static final String REQUEST_ENGINEER_USER_ID = "request.ENGINEER_USER_ID";
     public static final String REPEAT_PASSWORD_PARAMETER = "repeatPassword";
     public static final String ROLE_PARAMETER = "role";
     public static final String SEARCH_CRITERIA_PARAMETER = "searchCriteria";
@@ -104,6 +109,7 @@ public class ConstantForApp {
     public static final String USER_FROM_OPTIONS_PARAMETER = "userFromOptions";
     public static final String USER_LIST_FROM_OPTIONS_PARAMETER = "usersFromOptions";
     public static final String USER_OF_PROJECT_PARAMETER = "userProjectFromOptions";
+    public static final String USER_ID_FOR_SEARCH = "userIDForSearch";
     public static final String UTF_8 = "UTF-8";
     public static final String MAIN_URI = "/";
     public static final String ADD_USER_TO_GROUP_URI = "/addUserToGroup";
