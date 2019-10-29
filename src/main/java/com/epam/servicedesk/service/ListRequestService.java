@@ -3,6 +3,7 @@ package com.epam.servicedesk.service;
 import com.epam.servicedesk.database.RequestDAO;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Role;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 public class ListRequestService implements Service {
 
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         String clientId = httpServletRequest.getParameter(CLIENT_ID_PARAMETER);

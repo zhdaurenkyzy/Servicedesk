@@ -1,6 +1,7 @@
 package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.GroupDAO;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +13,9 @@ import static com.epam.servicedesk.util.ConstantForApp.LIST_GROUP_JSP;
 
 public class ListGroupService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         GroupDAO groupDAO = new GroupDAO();
-        httpServletRequest.setAttribute(GROUP_LIST_PARAMETER, groupDAO.getAllGroup());
+        httpServletRequest.setAttribute(GROUP_LIST_PARAMETER, groupDAO.getAll());
         httpServletRequest.getServletContext().getRequestDispatcher(LIST_GROUP_JSP).forward(httpServletRequest, httpServletResponse);
     }
 }

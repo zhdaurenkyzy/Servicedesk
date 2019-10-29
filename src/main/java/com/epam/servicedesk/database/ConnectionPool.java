@@ -1,29 +1,39 @@
 package com.epam.servicedesk.database;
 
+import com.epam.servicedesk.exception.ConnectionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import static com.epam.servicedesk.util.ConstantForApp.CONNECTION_NOT_FOUND;
+import static com.epam.servicedesk.util.ConstantForApp.EMPTY_STRING;
 
 public class ConnectionPool {
 
     private static final ConnectionPool UNIQUE_INSTANCE = new ConnectionPool();
     private final BlockingQueue<Connection> CONNECTION_QUEUE = new ArrayBlockingQueue<>(5);
-    private static final String CLASS_FOR_NAME = "com.mysql.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/servicedesk?serverTimezone=Asia/Almaty&useSSL=false";
-    private static final String USER = "root";
-    private static final String PASSWORD = "root";
+    private static final String CONNECTION_POOL_BUNDLE = "connectionPool";
+    private static final String CONNECTION_POOL_URL = "url";
+    private static final String CONNECTION_POOL_USER = "user";
+    private static final String CONNECTION_POOL_PASSWORD = "password";
+    private static final String CONNECTION_PULL_INIT_CONNECTION_COUNT = "initConnectionCount";
+    private final Locale LOCALE = new Locale(EMPTY_STRING);
+    private final ResourceBundle BUNDLE = ResourceBundle.getBundle(CONNECTION_POOL_BUNDLE, LOCALE);
+    private final String URL = BUNDLE.getString(CONNECTION_POOL_URL);
+    private final String USER = BUNDLE.getString(CONNECTION_POOL_USER);
+    private final String PASSWORD = BUNDLE.getString(CONNECTION_POOL_PASSWORD);
+    private final int INIT_CONNECTION_COUNT = Integer.parseInt(BUNDLE.getString(CONNECTION_PULL_INIT_CONNECTION_COUNT));
+    private static final Logger LOGGER = LogManager.getRootLogger();
 
     private ConnectionPool() {
-        try {
-            Class.forName(CLASS_FOR_NAME);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= INIT_CONNECTION_COUNT; i++) {
             try {
                 CONNECTION_QUEUE.put(getConnection());
             } catch (InterruptedException e) {
@@ -56,7 +66,7 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void putback(Connection connection) {
+    public void putback(Connection connection) throws ConnectionException {
         if (connection != null) {
             try {
                 CONNECTION_QUEUE.put(connection);
@@ -65,7 +75,8 @@ public class ConnectionPool {
             }
         }
         else {
-            System.out.println(CONNECTION_NOT_FOUND);
+            LOGGER.error(CONNECTION_NOT_FOUND);
+            throw new ConnectionException();
         }
     }
 }

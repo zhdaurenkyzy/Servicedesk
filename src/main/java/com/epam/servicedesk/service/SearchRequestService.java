@@ -1,6 +1,7 @@
 package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.RequestDAO;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,7 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class SearchRequestService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         String searchCriteria = httpServletRequest.getParameter(SEARCH_CRITERIA_PARAMETER);
         String searchText = httpServletRequest.getParameter(SEARCH_TEXT_PARAMETER);
@@ -32,10 +33,10 @@ public class SearchRequestService implements Service {
         }
         else statusId=NULL_ID;
         if(column==EMPTY_STRING){
-            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE,requestDAO.searchByOperator(searchCriteria, searchText, searchId));
+            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE,requestDAO.searchRequestByOperator(searchCriteria, searchText, searchId));
         }
         else {
-            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE, requestDAO.search(column, userId, statusId, searchCriteria, searchText, searchId));
+            httpServletRequest.setAttribute(REQUEST_STATES_ATTRIBUTE, requestDAO.searchRequestByUser(column, userId, statusId, searchCriteria, searchText, searchId));
         }
         httpServletRequest.getServletContext().getRequestDispatcher(LIST_REQUEST_JSP).forward(httpServletRequest, httpServletResponse);
     }

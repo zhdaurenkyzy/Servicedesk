@@ -47,9 +47,6 @@
 			<div class="content">
 
 				<div class="main">
-					<h1>Параметры</h1>
-
-					<!--Списки параметров-->
 
 					<div class="row">
 						<div class="col">
@@ -71,7 +68,10 @@
                                         <p><input type="submit" value=<fmt:message key = "key.users" bundle = "${resourceBundle}"/>></p>
                                     </form>
                                 </li>
-
+                                <li><form method="POST" action="/listMode" >
+                                         <p><input type="submit" value=<fmt:message key = "key.mode" bundle = "${resourceBundle}"/>></p>
+                                    </form>
+                                </li>
 							</ul>
 						</div>
 

@@ -1,6 +1,7 @@
 package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.UserDAO;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +13,9 @@ import static com.epam.servicedesk.util.ConstantForApp.USER_LIST_FROM_OPTIONS_PA
 
 public class ListUserService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         UserDAO userDAO = new UserDAO();
-        httpServletRequest.setAttribute(USER_LIST_FROM_OPTIONS_PARAMETER, userDAO.getAllUsers());
+        httpServletRequest.setAttribute(USER_LIST_FROM_OPTIONS_PARAMETER, userDAO.getAll());
         httpServletRequest.getServletContext().getRequestDispatcher(LIST_USER_JSP).forward(httpServletRequest, httpServletResponse);
     }
 }

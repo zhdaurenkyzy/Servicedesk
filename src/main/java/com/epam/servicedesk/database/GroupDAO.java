@@ -1,128 +1,109 @@
 package com.epam.servicedesk.database;
 
 import com.epam.servicedesk.entity.Group;
+import com.epam.servicedesk.exception.ConnectionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
+import static com.epam.servicedesk.util.ConstantForApp.*;
+import static com.epam.servicedesk.util.ConstantForApp.CANNOT_DELETE_ENTITY_BY_MYSQL;
 import static com.epam.servicedesk.util.ConstantForDAO.*;
 
-public class GroupDAO {
+public class GroupDAO extends AbstractDAO<Group, Long> {
+    private static final Logger LOGGER = LogManager.getRootLogger();
+    private final ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
-    ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
-
-    public void add(Group group){
-        Connection connection = connectionPool.retrieve();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(ADD_GROUP);
-            preparedStatement.setString(1, group.getName());
-            preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
+    @Override
+    public String getSelectQuery() {
+        return GET_ALL_GROUP;
     }
 
-    public Group getByName(String name) {
-        Connection connection = connectionPool.retrieve();
-        Group group = new Group();
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(GET_GROUP_BY_NAME);
-            preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                group.setId(resultSet.getLong("GROUP_ID"));
-                group.setName(resultSet.getString("GROUP_NAME"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
+    @Override
+    public String getQueryById() {
+        return GET_GROUP_BY_ID;
+    }
+
+    @Override
+    public String getCreateQuery() {
+        return ADD_GROUP;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return UPDATE_GROUP;
+    }
+
+    @Override
+    protected void prepareStatementForSet(Group group, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, group.getName());
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(Group group, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, group.getName());
+        preparedStatement.setLong(2, group.getId());
+    }
+
+    @Override
+    protected Group parseResultSet(Group group, ResultSet resultSet) throws SQLException {
+        group.setId(resultSet.getLong("GROUP_ID"));
+        group.setName(resultSet.getString("GROUP_NAME"));
         return group;
     }
 
-    public List<Group> getAllGroup(){
-        Connection connection = connectionPool.retrieve();
-        List<Group> groups = new ArrayList<>();
-        Group group = null;
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(GET_ALL_GROUP);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                group = new Group();
-                group.setId(resultSet.getLong("GROUP_ID"));
-                group.setName(resultSet.getString("GROUP_NAME"));
-                groups.add(group);
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
-        return groups;
-    }
-
-    public Group getById(long id){
-        Connection connection = connectionPool.retrieve();
+    @Override
+    protected Group create() {
         Group group = new Group();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(GET_GROUP_BY_ID);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                group.setId(resultSet.getLong("GROUP_ID"));
-                group.setName(resultSet.getString("GROUP_NAME"));
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
         return group;
     }
 
-    public void updateGroup(Group group){
+    @Override
+    public void delete(Group group) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(UPDATE_GROUP);
-            preparedStatement.setString(1, group.getName());
-            preparedStatement.setLong(2, group.getId());
-            preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
-    }
-
-    public void deleteGroup(Group group){
-        Connection connection = connectionPool.retrieve();
-        PreparedStatement preparedStatement = null;
-        try{
+        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GROUP)){
+            connection.setAutoCommit(false);
             deleteStringsFromUserGroup(group, connection);
-            preparedStatement = connection.prepareStatement(DELETE_GROUP);
             preparedStatement.setLong(1, group.getId());
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
         }
-        connectionPool.putback(connection);
+    }
+
+    public Group getByName(String name) throws ConnectionException {
+        Connection connection = connectionPool.retrieve();
+        Group group = new Group();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_GROUP_BY_NAME)) {
+            preparedStatement.setString(1, name);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    parseResultSet(group, resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL, e);
+        }finally {
+            connectionPool.putback(connection);
+        }
+        return group;
     }
 
     public void deleteStringsFromUserGroup(Group group, Connection connection){
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(DELETE_FROM_USER_GROUP);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_USER_GROUP)) {
             preparedStatement.setLong(1, group.getId());
             preparedStatement.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
         }
     }
 }

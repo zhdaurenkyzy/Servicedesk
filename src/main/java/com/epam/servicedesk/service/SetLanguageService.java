@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.LanguageDAO;
 import com.epam.servicedesk.entity.Language;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public class SetLanguageService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         LanguageDAO languageDAO = new LanguageDAO();
         Language language;
         if (httpServletRequest.getParameter(LANGUAGE_ID_PARAMETER) == null) {

@@ -3,6 +3,7 @@ package com.epam.servicedesk.service;
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Role;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -17,7 +18,7 @@ import static com.epam.servicedesk.validation.UserValidation.*;
 public class RegistrationService implements Service {
 
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         User user = new User();
         user.setName(validateName(httpServletRequest.getParameter(NAME_PARAMETER)));

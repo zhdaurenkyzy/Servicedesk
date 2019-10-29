@@ -4,6 +4,7 @@ import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.Request;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Role;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 
 import static com.epam.servicedesk.util.ConstantForApp.*;
@@ -18,7 +19,7 @@ public class FieldsRequestValidator {
         else request.setModeId(validateLong(parameter));
     }
 
-    public void setProjectIdRequest(Request request, User user, String parameter) {
+    public void setProjectIdRequest(Request request, User user, String parameter) throws ConnectionException {
         UserDAO userDAO = new UserDAO();
         if((userDAO.getProjectIdByUserId(user.getId())==null&&user.getUserRole().getId()>=CLIENT_ROLE_ID)){
             request.setProjectId(NULL_ID);

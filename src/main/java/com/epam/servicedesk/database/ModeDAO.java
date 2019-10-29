@@ -1,83 +1,96 @@
 package com.epam.servicedesk.database;
 
 import com.epam.servicedesk.entity.Mode;
+import com.epam.servicedesk.exception.ConnectionException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
+import static com.epam.servicedesk.util.ConstantForApp.CANNOT_DELETE_ENTITY_BY_MYSQL;
+import static com.epam.servicedesk.util.ConstantForApp.CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL;
 import static com.epam.servicedesk.util.ConstantForDAO.*;
 
-public class ModeDAO {
-    ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
+public class ModeDAO extends AbstractDAO<Mode, Long> {
+    private static final Logger LOGGER = LogManager.getRootLogger();
+    private final ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
-    public void add(Mode mode) {
-        Connection connection = connectionPool.retrieve();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(ADD_MODE);
-            preparedStatement.setString(1, mode.getName());
-            preparedStatement.executeUpdate();
-        }catch (SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
+    @Override
+    public String getSelectQuery() {
+        return GET_ALL_MODE;
     }
 
-    public List<Mode> getAllMode() {
-        Connection connection = connectionPool.retrieve();
-        List<Mode> modes = new ArrayList<>();
-        Mode mode = null;
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(GET_ALL_MODE);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()){
-                mode = new Mode();
-                mode.setId(resultSet.getLong("MODE_ID"));
-                mode.setName(resultSet.getString("MODE_NAME"));
-                modes.add(mode);
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
-        return modes;
+    @Override
+    public String getQueryById() {
+        return GET_MODE_BY_ID;
     }
 
-    public Mode getById(long id) {
-        Connection connection = connectionPool.retrieve();
-        Mode mode = new Mode();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(GET_MODE_BY_ID);
-            preparedStatement.setLong(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while(resultSet.next()) {
-                mode.setId(resultSet.getLong("STATUS_ID"));
-                mode.setName(resultSet.getString("STATUS_NAME"));
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        connectionPool.putback(connection);
+    @Override
+    public String getCreateQuery() {
+        return ADD_MODE;
+    }
+
+    @Override
+    public String getUpdateQuery() {
+        return UPDATE_MODE;
+    }
+
+    @Override
+    protected void prepareStatementForSet(Mode mode, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, mode.getName());
+    }
+
+    @Override
+    protected void prepareStatementForUpdate(Mode mode, PreparedStatement preparedStatement) throws SQLException {
+        preparedStatement.setString(1, mode.getName());
+        preparedStatement.setLong(2, mode.getId());
+    }
+
+    @Override
+    protected Mode parseResultSet(Mode mode, ResultSet resultSet) throws SQLException {
+        mode.setId(resultSet.getLong("MODE_ID"));
+        mode.setName(resultSet.getString("MODE_NAME"));
         return mode;
     }
 
-    public void updateMode(Mode mode) {
+    @Override
+    protected Mode create() {
+        Mode mode = new Mode();
+        return mode;
+    }
+
+    @Override
+    public void delete(Mode mode) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
-        PreparedStatement preparedStatement = null;
-        try{
-            preparedStatement = connection.prepareStatement(UPDATE_MODE);
-            preparedStatement.setString(1, mode.getName());
-            preparedStatement.setLong(2, mode.getId());
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MODE)) {
+            preparedStatement.setLong(1, mode.getId());
             preparedStatement.executeUpdate();
         }catch (SQLException e){
-            e.printStackTrace();
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
+        }finally {
+            connectionPool.putback(connection);
         }
-        connectionPool.putback(connection);
+    }
+
+    public Mode getByName(String name) throws ConnectionException {
+        Connection connection = connectionPool.retrieve();
+        Mode mode = create();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_MODE_BY_NAME)) {
+            preparedStatement.setString(1, name);
+            try(ResultSet resultSet = preparedStatement.executeQuery();) {
+                while (resultSet.next()) {
+                    mode.setId(resultSet.getLong("MODE_ID"));
+                    mode.setName(resultSet.getString("MODE_NAME"));
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL, e);
+        }finally {
+            connectionPool.putback(connection);
+        }
+        return mode;
     }
 }

@@ -1,6 +1,7 @@
 package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.RequestDAO;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,12 +13,12 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class DecisionCabinetService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
-        String currentUri = EMPTY_STRING;
+        String currentUri;
         if((isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)))&&(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)!=null)) {
             System.out.println((httpServletRequest.getParameter(REQUEST_ID_PARAMETER)));
-            httpServletRequest.setAttribute(REQUEST_PARAMETER, requestDAO.getRequestById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))));
+            httpServletRequest.setAttribute(REQUEST_PARAMETER, requestDAO.getById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))));
             currentUri =  DECISION_CABINET_JSP;
         }
         else{

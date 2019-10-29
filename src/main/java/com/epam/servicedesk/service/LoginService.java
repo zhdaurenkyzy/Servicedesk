@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
+import com.epam.servicedesk.exception.ConnectionException;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
@@ -15,7 +16,7 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 public class LoginService implements Service {
 
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         String login = httpServletRequest.getParameter(LOGIN_PARAMETER);
         String password = httpServletRequest.getParameter(PASSWORD_PARAMETER);

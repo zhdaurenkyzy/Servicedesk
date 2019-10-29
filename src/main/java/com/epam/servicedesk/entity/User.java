@@ -1,9 +1,11 @@
 package com.epam.servicedesk.entity;
 
 import com.epam.servicedesk.enums.Role;
+
+import java.io.Serializable;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
     private long id;
     private String name;
     private String position;
@@ -106,6 +108,4 @@ public class User {
     public void setProject(Project project) {
         this.project = project;
     }
-
-
 }

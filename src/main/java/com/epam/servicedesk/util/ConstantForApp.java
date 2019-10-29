@@ -1,6 +1,6 @@
 package com.epam.servicedesk.util;
 
-public class ConstantForApp {
+public final class ConstantForApp {
     public static final String INCORRECT_FORMAT = "1";
     public static final String WRONG_LOGIN_OR_PASS_MESSAGE_ID = "2";
     public static final String GROUP_ALREADY_EXISTS_MESSAGE_ID = "3";
@@ -10,10 +10,11 @@ public class ConstantForApp {
     public static final String PASSWORD_INCORRECT_FORMAT = "7";
     public static final String MAIL_INCORRECT_FORMAT = "8";
     public static final String LOGIN_INCORRECT_FORMAT = "9";
+    public static final String MODE_ALREADY_EXISTS_MESSAGE_ID = "10";
     public static final String ZERO_STRING = "0";
     public static final long AUTHOR_OF_DECISION__ID_DEFAULT = 0;
     public static final int DESCRIPTION_OR_DECISION_MAX_LENGTH = 2000;
-    public static final int GROUP_OR_PROJECT_MAX_LENGTH = 100;
+    public static final int GROUP_OR_PROJECT_OR_MODE_MAX_LENGTH = 10;
     public static final int MAIL_MAX_LENGTH = 32;
     public static final int MAIL_MIN_LENGTH = 6;
     public static final long LANGUAGE_ID_DEFAULT = 1;
@@ -60,6 +61,9 @@ public class ConstantForApp {
     public static final String MAIL_PARAMETER = "mail";
     public static final String MESSAGE = "message";
     public static final String MOBILE_PARAMETER = "mobile";
+    public static final String MODE_NAME_PARAMETER = "modeName";
+    public static final String MODE_ID_GET_METHOD_PARAMETER = "modeID";
+    public static final String MODE_PARAMETER = "mode";
     public static final String MODE_LIST_PARAMETER = "modes";
     public static final String NAME_PARAMETER = "name";
     public static final String NULL_STRING = "null";
@@ -112,13 +116,24 @@ public class ConstantForApp {
     public static final String USER_ID_FOR_SEARCH = "userIDForSearch";
     public static final String UTF_8 = "UTF-8";
     public static final String MAIN_URI = "/";
+    public static final String CANNOT_DELETE_ENTITY_BY_MYSQL = "Cannot delete entity by MySQL";
+    public static final String CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL = "Cannot download entity by name from MySQL";
+    public static final String CANNOT_DOWNLOAD_ENTITY_FROM_MYSQL = "Cannot download entity from MySQL";
+    public static final String CANNOT_ADD_NEW_ENTITY_BY_MYSQL = "Cannot add new entity by MySQL";
+    public static final String CANNOT_UPDATE_ENTITY_IN_MYSQL = "Cannot update entity in MySQL";
+    public static final String CANNOT_EXECUTE_DAO_METHOD = "Cannot execute DAO method";
+    public static final String NOT_FOUND_ENTITY_BY_ID_IN_MYSQL = "Not found entity by id in MySQL";
+    public static final String NOT_FOUND_ENTITY_ID_IN_MYSQL = "Not found entity id in MySQL";
+    public static final String CANNOT_DOWNLOAD_LIST_FROM_MYSQL = "Not found entity by id in MySQL";
     public static final String ADD_USER_TO_GROUP_URI = "/addUserToGroup";
     public static final String CHANGE_STATE_URI = "/changeState";
     public static final String CREATE_GROUP_URI = "/createGroup";
+    public static final String CREATE_MODE_URI = "/createMode";
     public static final String CREATE_PROJECT_URI = "/createProject";
     public static final String CREATE_REQUEST_URI = "/createRequest";
     public static final String DECISION_CABINET_URI = "/decisionCabinet";
     public static final String DELETE_GROUP_URI = "/deleteGroup";
+    public static final String DELETE_MODE_URI = "/deleteMode";
     public static final String DELETE_PROJECT_URI = "/deleteProject";
     public static final String DELETE_REQUEST_URI = "/deleteRequest";
     public static final String DELETE_USER_URI = "/deleteUser";
@@ -130,6 +145,7 @@ public class ConstantForApp {
     public static final String GROUP_CABINET_WITH_ID_URI = "/groupCabinet?Id=";
     public static final String LIST_CLIENT_URI = "/listClient";
     public static final String LIST_GROUP_URI = "/listGroup";
+    public static final String LIST_MODE_URI = "/listMode";
     public static final String LIST_PROJECT_URI = "/listProject";
     public static final String LIST_PROJECT_WITH_STATE_URI = "/listProject?state=";
     public static final String LIST_PROJECT_STATE_TRUE_URI = "/listProject?state=true";
@@ -137,6 +153,7 @@ public class ConstantForApp {
     public static final String LIST_USER_URI = "/listUser";
     public static final String LOGIN_URI = "/login";
     public static final String LOGOUT_URI = "/logout";
+    public static final String MODE_CABINET_URI = "/modeCabinet";
     public static final String PROJECT_CABINET_URI = "/projectCabinet";
     public static final String REGISTRATION_URI = "/registration";
     public static final String REGISTRATION_USER_BY_OPERATOR_URI = "/registrationUserByOperator";
@@ -147,6 +164,7 @@ public class ConstantForApp {
     public static final String SEARCH_REQUEST_URI = "/searchRequest";
     public static final String SET_LANGUAGE_URI = "/setLanguage";
     public static final String UPDATE_GROUP_NAME_URI = "/updateGroupName";
+    public static final String UPDATE_MODE_URI = "/updateMode";
     public static final String UPDATE_PROJECT_URI = "/updateProject";
     public static final String UPDATE_REQUEST_URI = "/updateRequest";
     public static final String UPDATE_USER_URI = "/updateUser";
@@ -157,11 +175,13 @@ public class ConstantForApp {
     public static final String GROUP_CABINET_JSP = "/jsp/groupCabinet.jsp";
     public static final String INDEX_JSP = "/index.jsp";
     public static final String LIST_GROUP_JSP = "/jsp/listGroup.jsp";
+    public static final String LIST_MODE_JSP = "/jsp/listMode.jsp";
     public static final String LIST_REQUEST_JSP = "/jsp/listRequest.jsp";
     public static final String LIST_PROJECT_JSP = "/jsp/listProject.jsp";
     public static final String LIST_USER_JSP = "/jsp/listUser.jsp";
     public static final String LIST_ENGINEER_JSP = "/jsp/listEngineer.jsp";
     public static final String LOGIN_JSP = "/jsp/login.jsp";
+    public static final String MODE_CABINET_JSP = "/jsp/modeCabinet.jsp";
     public static final String OPTIONS_JSP = "/jsp/options.jsp";
     public static final String PROJECT_CABINET_JSP = "/jsp/projectCabinet.jsp";
     public static final String REQUEST_CABINET_JSP = "/jsp/requestCabinet.jsp";
@@ -170,4 +190,5 @@ public class ConstantForApp {
     public static final String USER_CABINET_JSP = "/jsp/userCabinet.jsp";
     public static final String ERROR_JSP = "/jsp/error.jsp";
     public static final String HISTORY_OF_REQUEST_JSP = "/jsp/historyOfRequest.jsp";
+
 }

@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.GroupDAO;
 import com.epam.servicedesk.database.UserDAO;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +15,7 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class GroupCabinetService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         GroupDAO groupDAO = new GroupDAO();
         UserDAO userDAO = new UserDAO();
         String GroupIDFromGetMethod = httpServletRequest.getParameter(GROUP_ID_GET_METHOD);
@@ -26,7 +27,7 @@ public class GroupCabinetService implements Service {
         }
         else {
             httpServletRequest.setAttribute(URI, CREATE_GROUP_URI);
-            httpServletRequest.setAttribute(USER_LIST, userDAO.getAllUsers());
+            httpServletRequest.setAttribute(USER_LIST, userDAO.getAll());
         }
         httpServletRequest.getServletContext().getRequestDispatcher(GROUP_CABINET_JSP).forward(httpServletRequest, httpServletResponse);
     }

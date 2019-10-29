@@ -18,7 +18,6 @@ public abstract class AbstractValidation {
     public static Long validateId(String id) throws ValidationException {
         if (id.equals(NULL_STRING)) {
             id = ZERO_STRING;
-
         }
         return validateLong(id);
     }

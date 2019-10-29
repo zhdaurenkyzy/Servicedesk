@@ -5,12 +5,12 @@ import java.util.Map;
 
 import static com.epam.servicedesk.util.ConstantForApp.*;
 
-public class Factory  {
+public class ServiceFactory {
 
     private static final Map<String, Service> STRING_SERVICE_MAP = new HashMap<>();
-    private static final Factory FACTORY = new Factory();
+    private static final ServiceFactory SERVICE_FACTORY = new ServiceFactory();
 
-    private Factory() {
+    private ServiceFactory() {
         init();
     }
 
@@ -51,10 +51,16 @@ public class Factory  {
         STRING_SERVICE_MAP.put(UPDATE_USER_URI, new UpdateUserService());
         STRING_SERVICE_MAP.put(UPDATE_USER_BY_OPERATOR_URI, new UpdateUserByOperatorService());
         STRING_SERVICE_MAP.put(SEARCH_REQUEST_URI, new SearchRequestService());
+        STRING_SERVICE_MAP.put(LIST_MODE_URI, new ListModeService());
+        STRING_SERVICE_MAP.put(MODE_CABINET_URI, new ModeCabinetService());
+        STRING_SERVICE_MAP.put(CREATE_MODE_URI, new CreateModeService());
+        STRING_SERVICE_MAP.put(UPDATE_MODE_URI, new UpdateModeService());
+        STRING_SERVICE_MAP.put(DELETE_MODE_URI, new DeleteModeService());
+
     }
 
-    public static Factory getInstance(){
-        return FACTORY;
+    public static ServiceFactory getInstance(){
+        return SERVICE_FACTORY;
     }
 
     public Service getService(String stringUri){

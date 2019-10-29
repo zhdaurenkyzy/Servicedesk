@@ -4,6 +4,7 @@ import com.epam.servicedesk.database.RequestDAO;
 import com.epam.servicedesk.entity.Request;
 import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Priority;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 import com.epam.servicedesk.validation.FieldsRequestValidator;
 
@@ -19,7 +20,7 @@ import static com.epam.servicedesk.validation.RequestValidation.validateTheme;
 
 public class CreateRequestService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         Request request = new Request();
         FieldsRequestValidator fieldsRequestValidator = new FieldsRequestValidator();
@@ -39,7 +40,7 @@ public class CreateRequestService implements Service {
             request.setDateOfCreation(LocalDateTime.now());
             request.setDecision(EMPTY_STRING);
             request.setAuthorOfDecisionId(AUTHOR_OF_DECISION__ID_DEFAULT );
-            requestDAO.addNewRequest(request);
+            requestDAO.add(request);
         }
         httpServletResponse.sendRedirect(LIST_REQUEST_URI);
     }

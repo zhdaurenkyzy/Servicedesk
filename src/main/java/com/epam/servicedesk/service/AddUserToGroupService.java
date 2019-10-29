@@ -4,12 +4,14 @@ import com.epam.servicedesk.database.GroupDAO;
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.Group;
 import com.epam.servicedesk.entity.User;
+import com.epam.servicedesk.exception.ConnectionException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ import static com.epam.servicedesk.validation.AbstractValidation.isNumeric;
 
 public class AddUserToGroupService implements Service {
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, SQLException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         GroupDAO groupDAO = new GroupDAO();
         String currentGroupId = httpServletRequest.getParameter(GROUP_ID_PARAMETER);
@@ -40,7 +42,7 @@ public class AddUserToGroupService implements Service {
         httpServletRequest.getServletContext().getRequestDispatcher(LIST_GROUP_URI).forward(httpServletRequest, httpServletResponse);
     }
 
-    private boolean checkId(List<Long> userIdListOfSelectedUsers, long groupID) {
+    private boolean checkId(List<Long> userIdListOfSelectedUsers, long groupID) throws ConnectionException {
         for (long id : userIdListOfSelectedUsers) {
             UserDAO userDAO = new UserDAO();
             for (User user:userDAO.getAllUserByGroupId(groupID)) {

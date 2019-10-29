@@ -2,6 +2,7 @@ package com.epam.servicedesk.service;
 
 import com.epam.servicedesk.database.UserDAO;
 import com.epam.servicedesk.entity.User;
+import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,7 @@ public class UpdateUserService implements Service {
     private static final Logger LOGGER = LogManager.getRootLogger();
 
     @Override
-    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException {
+    public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         user.setName(validateName(httpServletRequest.getParameter(NAME_PARAMETER)));
@@ -31,10 +32,10 @@ public class UpdateUserService implements Service {
         String repeatPassword = validatePassword(httpServletRequest.getParameter(REPEAT_PASSWORD_PARAMETER));
         user.setUserRole(user.getUserRole());
         user.setId(user.getId());
-        if (((password != null) & (repeatPassword != null)) & (password.equals(repeatPassword))) {
+        if (((password != null) && (repeatPassword != null)) && (password.equals(repeatPassword))) {
             user.setPassword(DigestUtils.md5Hex(password));
-            userDAO.updateUser(user);
-            LOGGER.info("User was updated userId = " + user.getId());
+            userDAO.update(user);
+            LOGGER.info(String.format("User was updated, userId = %d", user.getId()));
         }
         httpServletResponse.sendRedirect(USER_CABINET_JSP);
     }

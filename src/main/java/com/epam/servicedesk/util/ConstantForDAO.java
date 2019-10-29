@@ -29,7 +29,6 @@ public final class ConstantForDAO {
     public static final String ADD_INTO_HISTORY = "INSERT INTO HISTORY (REQUEST_ID, COLUMN_NAME, COLUMN_VALUE_BEFORE, COLUMN_VALUE_AFTER, DATE_OF_CHANGE, USER_ID) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String GET_HISTORY_BY_REQUEST_ID = "SELECT * FROM HISTORY WHERE REQUEST_ID=?";
     public static final String DELETE_HISTORY = "DELETE FROM HISTORY WHERE REQUEST_ID=?";
-    public static final String ADD_LANGUAGE = "INSERT INTO LANGUAGE (LANGUAGE_NAME) VALUES (?)";
     public static final String GET_ALL_LANGUAGE = "SELECT * FROM LANGUAGE";
     public static final String GET_LANGUAGE_BY_ID = "SELECT * FROM LANGUAGE WHERE LANGUAGE_ID=?";
     public static final String ADD_LEVEL = "INSERT INTO LEVEL (LEVEL_NAME) VALUES (?)";
@@ -38,7 +37,9 @@ public final class ConstantForDAO {
     public static final String ADD_MODE = "INSERT INTO MODE (MODE_NAME) VALUES (?)";
     public static final String GET_ALL_MODE = "SELECT * FROM MODE";
     public static final String GET_MODE_BY_ID = "SELECT * FROM MODE WHERE MODE_ID=?";
+    public static final String GET_MODE_BY_NAME = "SELECT * FROM MODE WHERE MODE_NAME=?";
     public static final String UPDATE_MODE = "UPDATE MODE SET MODE_NAME =? WHERE MODE_ID=?";
+    public static final String DELETE_MODE = "DELETE FROM MODE WHERE MODE_ID=?";
     public static final String ADD_PROJECT = "INSERT INTO PROJECT (PROJECT_NAME, PROJECT_STATE) VALUES (?, true)";
     public static final String GET_PROJECT_BY_ID = "SELECT * FROM PROJECT WHERE PROJECT_ID=?";
     public static final String GET_PROJECT_BY_NAME = "SELECT * FROM PROJECT WHERE PROJECT_NAME=?";
@@ -86,4 +87,6 @@ public final class ConstantForDAO {
     public static final String GET_ALL_USER_WITHOUT_GROUP = "SELECT USER.USER_ID, USER.USER_NAME FROM USER LEFT JOIN USER_GROUP ON" +
             " USER.USER_ID=(SELECT USER_GROUP.USER_ID WHERE GROUP_ID =?) WHERE USER_GROUP.USER_ID IS NULL AND (USER_ROLE=0 OR USER_ROLE=1)";
     public static final String ADD_LIST_USER_TO_GROUP = "INSERT INTO USER_GROUP(USER_ID, GROUP_ID) VALUES (?, ?)";
+    public static final String SEARCH_BY_USER = "{call servicedesk.searchByUserId(?, ?, ?, ?, ?, ?)}";
+    public static final String SEARCH_BY_OPERATOR = "{call servicedesk.searchByOperator(?, ?, ?)}";
 }
