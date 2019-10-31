@@ -25,11 +25,11 @@ public class ServicedeskController extends HttpServlet {
             service.execute(httpServletRequest, httpServletResponse);
         } catch (SQLException e) {
             LOGGER.error(CANNOT_EXECUTE_DAO_METHOD, e);
-        }catch (ValidationException e) {
+        } catch (ValidationException e) {
             LOGGER.error(e.getMessage());
             httpServletRequest.getSession().setAttribute(MESSAGE, e.getMessage());
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-        }catch (Exception e) {
+        } catch (Exception e) {
             LOGGER.error(e);
             throw new ServletException(e);
         }

@@ -25,8 +25,8 @@ public class UpdateProjectService implements Service {
         ProjectDAO projectDAO = new ProjectDAO();
         Project project = new Project();
         project.setName(validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(NAME_PARAMETER)));
-        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             project.setId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
             if (!project.getName().equals(projectDAO.getByName(project.getName()).getName())) {
                 projectDAO.update(project);

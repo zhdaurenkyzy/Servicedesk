@@ -29,11 +29,11 @@ public abstract class AbstractValidation {
         return string;
     }
 
-    public static boolean isNumeric(String string){
+    public static boolean isNumeric(String string) {
         try {
             Long.parseLong(string);
             return true;
-        } catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }

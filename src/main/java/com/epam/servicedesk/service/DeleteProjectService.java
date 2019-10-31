@@ -23,8 +23,8 @@ public class DeleteProjectService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, SQLException, ConnectionException {
         ProjectDAO projectDAO = new ProjectDAO();
         Project project = new Project();
-        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             project = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
         projectDAO.delete(project);

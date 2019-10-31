@@ -20,11 +20,10 @@ public class CreateGroupService implements Service {
         String groupName = httpServletRequest.getParameter(GROUP_NAME_PARAMETER);
         Group group = new Group();
         group.setName(validateNameGroupOrProjectOrMode(groupName));
-        if(groupDAO.getByName(groupName).getName()!=null){
+        if (groupDAO.getByName(groupName).getName() != null) {
             httpServletRequest.getSession().setAttribute(MESSAGE, GROUP_ALREADY_EXISTS_MESSAGE_ID);
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-        }
-        else {
+        } else {
             groupDAO.add(group);
             httpServletRequest.getRequestDispatcher(LIST_GROUP_URI).forward(httpServletRequest, httpServletResponse);
         }

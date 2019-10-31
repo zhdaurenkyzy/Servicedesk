@@ -10,16 +10,16 @@ import static com.epam.servicedesk.util.ConstantForApp.*;
 public class AccountFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest)servletRequest;
+        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String servletPath = httpServletRequest.getServletPath();
-        if(servletPath.equals(LOGIN_JSP)||servletPath.equals(INDEX_JSP)){
+        if (servletPath.equals(LOGIN_JSP) || servletPath.equals(INDEX_JSP)) {
             if (httpServletRequest.getSession().getAttribute(USER_PARAMETER) != null) {
                 httpServletResponse.sendRedirect(USER_CABINET_JSP);
                 return;
@@ -45,4 +45,6 @@ public class AccountFilter implements Filter {
     public void destroy() {
 
     }
+
+
 }

@@ -22,7 +22,7 @@ public class UpdateUserService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         UserDAO userDAO = new UserDAO();
-        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         user.setName(validateName(httpServletRequest.getParameter(NAME_PARAMETER)));
         user.setPosition(validatePosition(httpServletRequest.getParameter(POSITION_PARAMETER)));
         user.setPhone(validatePhone(httpServletRequest.getParameter(PHONE_PARAMETER)));

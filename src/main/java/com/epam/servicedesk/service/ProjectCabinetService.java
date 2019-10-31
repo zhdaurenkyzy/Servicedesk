@@ -16,7 +16,7 @@ public class ProjectCabinetService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         ProjectDAO projectDAO = new ProjectDAO();
-        if(isNumeric(httpServletRequest.getParameter(PROJECT_ID_GET_METHOD_PARAMETER))){
+        if (isNumeric(httpServletRequest.getParameter(PROJECT_ID_GET_METHOD_PARAMETER))) {
             httpServletRequest.setAttribute(PROJECT_PARAMETER, projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(PROJECT_ID_GET_METHOD_PARAMETER))));
             httpServletRequest.setAttribute(PROJECT_ID_GET_METHOD_PARAMETER, Long.parseLong(httpServletRequest.getParameter(PROJECT_ID_GET_METHOD_PARAMETER)));
         }

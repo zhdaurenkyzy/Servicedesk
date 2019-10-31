@@ -25,10 +25,10 @@ public class UpdateGroupNameService implements Service {
         GroupDAO groupDAO = new GroupDAO();
         Group group = new Group();
         group.setName(validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(GROUP_NAME_PARAMETER)));
-        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(GROUP_ID_PARAMETER))) {
+        User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(GROUP_ID_PARAMETER))) {
             group.setId(Long.parseLong(httpServletRequest.getParameter(GROUP_ID_PARAMETER)));
-            if(!group.getName().equals(groupDAO.getByName(group.getName()).getName())) {
+            if (!group.getName().equals(groupDAO.getByName(group.getName()).getName())) {
                 groupDAO.update(group);
                 LOGGER.info(String.format("Group name was updated groupId = %d by userId %d", group.getId(), user.getId()));
             }

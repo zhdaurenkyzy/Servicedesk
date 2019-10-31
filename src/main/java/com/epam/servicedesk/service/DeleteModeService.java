@@ -23,8 +23,8 @@ public class DeleteModeService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         ModeDAO modeDAO = new ModeDAO();
         Mode mode = new Mode();
-        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             mode = modeDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
         modeDAO.delete(mode);

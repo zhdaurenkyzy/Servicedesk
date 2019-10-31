@@ -23,8 +23,8 @@ public class DeleteGroupService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, SQLException, ConnectionException {
         GroupDAO groupDAO = new GroupDAO();
         Group group = new Group();
-        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(GROUP_ID_PARAMETER))) {
+        User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(GROUP_ID_PARAMETER))) {
             group = groupDAO.getById(Long.parseLong(httpServletRequest.getParameter(GROUP_ID_PARAMETER)));
         }
         groupDAO.delete(group);

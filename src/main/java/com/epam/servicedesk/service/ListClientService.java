@@ -16,10 +16,10 @@ public class ListClientService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         UserDAO userDAO = new UserDAO();
-        if(httpServletRequest.getAttribute(ID_PROJECT_PARAMETER)==null) {
+        if (httpServletRequest.getAttribute(ID_PROJECT_PARAMETER) == null) {
             httpServletRequest.setAttribute(CLIENT_LIST_PARAMETER, userDAO.getALLClient());
         }
-        if(isNumeric(httpServletRequest.getParameter(ID_PROJECT_PARAMETER))){
+        if (isNumeric(httpServletRequest.getParameter(ID_PROJECT_PARAMETER))) {
             httpServletRequest.setAttribute(CLIENT_LIST_PARAMETER, userDAO.getAllClientByProjectId(Long.parseLong(httpServletRequest.getParameter(ID_PROJECT_PARAMETER))));
         }
         httpServletRequest.getServletContext().getRequestDispatcher(SELECT_CLIENT_FOR_REQUEST_CABINET_JSP).forward(httpServletRequest, httpServletResponse);

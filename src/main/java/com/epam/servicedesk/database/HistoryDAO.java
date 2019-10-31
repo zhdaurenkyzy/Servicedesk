@@ -60,7 +60,7 @@ public class HistoryDAO {
     }
 
     private void addNewHistory(Request request, Connection connection, String columnName, User user) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(ADD_INTO_HISTORY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_INTO_HISTORY)) {
             historyPreparedStatement(request, preparedStatement, connection, columnName, user);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -72,9 +72,9 @@ public class HistoryDAO {
         History history = new History();
         Request oldRequest = new Request();
         history.setRequest(oldRequest);
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_REQUEST_BY_REQUEST_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_REQUEST_BY_REQUEST_ID)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     parseResultSet(history, resultSet);
                 }
@@ -89,9 +89,9 @@ public class HistoryDAO {
         Connection connection = connectionPool.retrieve();
         List<History> histories = new ArrayList<>();
         History history = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_HISTORY_BY_REQUEST_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_HISTORY_BY_REQUEST_ID)) {
             preparedStatement.setLong(1, request.getId());
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     history = new History();
                     history.setId(resultSet.getLong("HISTORY_ID"));
@@ -113,7 +113,7 @@ public class HistoryDAO {
     }
 
     public void deleteHistoryByRequestId(Request request, Connection connection) {
-        try( PreparedStatement preparedStatement = connection.prepareStatement(DELETE_HISTORY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_HISTORY)) {
             preparedStatement.setLong(1, request.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -132,35 +132,35 @@ public class HistoryDAO {
             columnName = "REQUEST_DESCRIPTION";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getStatusId()!=request.getStatusId()) {
+        if (oldRequest.getStatusId() != request.getStatusId()) {
             columnName = "REQUEST_STATUS_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getLevelId()!=request.getLevelId()) {
+        if (oldRequest.getLevelId() != request.getLevelId()) {
             columnName = "REQUEST_LEVEL_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getModeId()!=request.getModeId()) {
+        if (oldRequest.getModeId() != request.getModeId()) {
             columnName = "REQUEST_MODE_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getPriority()!=request.getPriority()) {
+        if (oldRequest.getPriority() != request.getPriority()) {
             columnName = "REQUEST_PRIORITY_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getGroupId()!=request.getGroupId()) {
+        if (oldRequest.getGroupId() != request.getGroupId()) {
             columnName = "ENGINEER_GROUP_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getEngineerId()!=request.getEngineerId()) {
+        if (oldRequest.getEngineerId() != request.getEngineerId()) {
             columnName = "ENGINEER_USER_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getProjectId()!=request.getProjectId()) {
+        if (oldRequest.getProjectId() != request.getProjectId()) {
             columnName = "PROJECT_ID";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getClientId()!=request.getClientId()) {
+        if (oldRequest.getClientId() != request.getClientId()) {
             columnName = "CLIENT_USER_ID";
             addNewHistory(request, connection, columnName, user);
         }
@@ -168,17 +168,17 @@ public class HistoryDAO {
             columnName = "REQUEST_DECISION";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getAuthorOfDecisionId()!=request.getAuthorOfDecisionId()) {
+        if (oldRequest.getAuthorOfDecisionId() != request.getAuthorOfDecisionId()) {
             columnName = "REQUEST_AUTHOR_OF_DECISION";
             addNewHistory(request, connection, columnName, user);
         }
-        if (oldRequest.getDateOfDecision()!=request.getDateOfDecision()) {
+        if (oldRequest.getDateOfDecision() != request.getDateOfDecision()) {
             columnName = "REQUEST_DATE_OF_DECISION";
             addNewHistory(request, connection, columnName, user);
         }
     }
 
-    private void initMapBeforeUpdate(Map map, Request oldRequest){
+    private void initMapBeforeUpdate(Map map, Request oldRequest) {
         map.put("REQUEST_THEME", oldRequest.getTheme());
         map.put("REQUEST_DESCRIPTION", String.valueOf(oldRequest.getDescription()));
         map.put("REQUEST_STATUS_ID", String.valueOf(oldRequest.getStatusId()));
@@ -194,7 +194,7 @@ public class HistoryDAO {
         map.put("REQUEST_DATE_OF_DECISION", String.valueOf(oldRequest.getDateOfDecision()));
     }
 
-    private void initMapAfterUpdate(Map map, Request oldRequest, Request request){
+    private void initMapAfterUpdate(Map map, Request oldRequest, Request request) {
         map.put(oldRequest.getTheme(), request.getTheme());
         map.put(String.valueOf(oldRequest.getDescription()), String.valueOf(request.getDescription()));
         map.put(String.valueOf(oldRequest.getStatusId()), String.valueOf(request.getStatusId()));

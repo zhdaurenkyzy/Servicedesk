@@ -15,7 +15,7 @@ public class EngineerRequestService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         UserDAO userDAO = new UserDAO();
-        if(httpServletRequest.getAttribute(ID_PARAMETER)==null) {
+        if (httpServletRequest.getAttribute(ID_PARAMETER) == null) {
             httpServletRequest.setAttribute(LIST_USER_PARAMETER, userDAO.getUsersByRole());
         }
         if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {

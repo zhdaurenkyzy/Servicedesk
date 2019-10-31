@@ -26,8 +26,8 @@ public class UpdateModeService implements Service {
         ModeDAO modeDAO = new ModeDAO();
         Mode mode = new Mode();
         mode.setName(validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(NAME_PARAMETER)));
-        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             mode.setId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
             if (!mode.getName().equals(modeDAO.getByName(mode.getName()).getName())) {
                 modeDAO.update(mode);

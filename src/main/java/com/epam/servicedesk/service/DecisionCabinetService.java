@@ -16,12 +16,11 @@ public class DecisionCabinetService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         String currentUri;
-        if((isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)))&&(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)!=null)) {
+        if ((isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))) && (httpServletRequest.getParameter(REQUEST_ID_PARAMETER) != null)) {
             System.out.println((httpServletRequest.getParameter(REQUEST_ID_PARAMETER)));
             httpServletRequest.setAttribute(REQUEST_PARAMETER, requestDAO.getById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))));
-            currentUri =  DECISION_CABINET_JSP;
-        }
-        else{
+            currentUri = DECISION_CABINET_JSP;
+        } else {
             currentUri = LIST_REQUEST_URI;
         }
         httpServletRequest.setAttribute(URI, currentUri);

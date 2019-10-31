@@ -1,6 +1,7 @@
 package com.epam.servicedesk.enums;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum Priority {
     LOW(0),
@@ -19,7 +20,9 @@ public enum Priority {
     }
 
     public static Priority getPriority(long id) {
-        Priority[]priorities = Priority.values();
-        return Arrays.stream(priorities).filter(priority -> priority.getId()==id).findFirst().get();
+        Priority[] priorities = Priority.values();
+        return Optional.of(Arrays.stream(priorities).filter(priority ->
+                priority.getId() == id).findFirst().get())
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

@@ -65,7 +65,7 @@ public class GroupDAO extends AbstractDAO<Group, Long> {
     @Override
     public void delete(Group group) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GROUP)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_GROUP)) {
             connection.setAutoCommit(false);
             deleteStringsFromUserGroup(group, connection);
             preparedStatement.setLong(1, group.getId());
@@ -85,24 +85,24 @@ public class GroupDAO extends AbstractDAO<Group, Long> {
         Group group = new Group();
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_GROUP_BY_NAME)) {
             preparedStatement.setString(1, name);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     parseResultSet(group, resultSet);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return group;
     }
 
-    public void deleteStringsFromUserGroup(Group group, Connection connection){
+    public void deleteStringsFromUserGroup(Group group, Connection connection) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_FROM_USER_GROUP)) {
             preparedStatement.setLong(1, group.getId());
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
         }
     }

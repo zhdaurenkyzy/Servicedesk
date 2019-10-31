@@ -23,12 +23,11 @@ public class UpdateUserByOperatorService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         User user = new User();
-        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         setFields(user, httpServletRequest);
-        if(httpServletRequest.getParameter(PASSWORD_PARAMETER).equals(EMPTY_STRING)) {
+        if (httpServletRequest.getParameter(PASSWORD_PARAMETER).equals(EMPTY_STRING)) {
             user.setPassword(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getPassword());
-        }
-        else {
+        } else {
             user.setPassword(DigestUtils.md5Hex(validatePassword(httpServletRequest.getParameter(PASSWORD_PARAMETER))));
         }
         user.setUserRole(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))).getUserRole());

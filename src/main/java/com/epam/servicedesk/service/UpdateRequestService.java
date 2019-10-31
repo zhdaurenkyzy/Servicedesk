@@ -6,7 +6,7 @@ import com.epam.servicedesk.entity.User;
 import com.epam.servicedesk.enums.Priority;
 import com.epam.servicedesk.exception.ConnectionException;
 import com.epam.servicedesk.exception.ValidationException;
-import com.epam.servicedesk.validation.FieldsRequestValidator;
+import com.epam.servicedesk.validation.FieldsRequestValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,30 +21,29 @@ import static com.epam.servicedesk.validation.RequestValidation.validateTheme;
 public class UpdateRequestService implements Service {
     @Override
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, SQLException, ConnectionException {
-        new ListProjectService().execute(httpServletRequest,httpServletResponse);
+        new ListProjectService().execute(httpServletRequest, httpServletResponse);
         RequestDAO requestDAO = new RequestDAO();
         Request request = new Request();
-        FieldsRequestValidator fieldsRequestValidator = new FieldsRequestValidator();
-        User user = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        FieldsRequestValidation fieldsRequestValidation = new FieldsRequestValidation();
+        User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
         getFieldsRequest(httpServletRequest);
         Long selectStatusId = Long.parseLong(httpServletRequest.getParameter(SELECT_STATUS_PARAMETER));
         Long requestId = Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER));
         Request oldRequest = requestDAO.getById(requestId);
-        fieldsRequestValidator.setModeIdRequest(request, user, httpServletRequest.getParameter(SELECT_MODE_PARAMETER));
-        fieldsRequestValidator.setGroupIdRequest(request, oldRequest.getGroupId(), user, httpServletRequest.getParameter(SELECT_GROUP_PARAMETER));
-        fieldsRequestValidator.setEngineerIdRequest(request,oldRequest.getEngineerId(), user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
-        fieldsRequestValidator.setProjectIdRequest(request, user, httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER));
-        fieldsRequestValidator.setClientIdRequest(request, user, httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER));
-        if((selectStatusId!=RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()==NULL_ID)) {
+        fieldsRequestValidation.setModeIdRequest(request, user, httpServletRequest.getParameter(SELECT_MODE_PARAMETER));
+        fieldsRequestValidation.setGroupIdRequest(request, oldRequest.getGroupId(), user, httpServletRequest.getParameter(SELECT_GROUP_PARAMETER));
+        fieldsRequestValidation.setEngineerIdRequest(request, oldRequest.getEngineerId(), user, httpServletRequest.getParameter(SELECT_ENGINEER_ID_PARAMETER));
+        fieldsRequestValidation.setProjectIdRequest(request, user, httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER));
+        fieldsRequestValidation.setClientIdRequest(request, user, httpServletRequest.getParameter(SELECT_CLIENT_ID_PARAMETER));
+        if ((selectStatusId != RESOLVED_STATUS_ID) && (oldRequest.getAuthorOfDecisionId() == NULL_ID)) {
             setValueRequest(httpServletRequest, request);
             request.setDecision(EMPTY_STRING);
             request.setAuthorOfDecisionId(NULL_ID);
             request.setId(requestId);
             requestDAO.updateRequestById(request, user);
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
-        }
-        else if(((selectStatusId==RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()!=NULL_ID)) |
-                ((selectStatusId!=RESOLVED_STATUS_ID)&&(oldRequest.getAuthorOfDecisionId()!=NULL_ID))) {
+        } else if (((selectStatusId == RESOLVED_STATUS_ID) && (oldRequest.getAuthorOfDecisionId() != NULL_ID)) |
+                ((selectStatusId != RESOLVED_STATUS_ID) && (oldRequest.getAuthorOfDecisionId() != NULL_ID))) {
             setValueRequest(httpServletRequest, request);
             request.setDecision(requestDAO.getById(requestId).getDecision());
             request.setDateOfDecision(oldRequest.getDateOfDecision());
@@ -52,8 +51,7 @@ public class UpdateRequestService implements Service {
             request.setId(requestId);
             requestDAO.updateRequestById(request, user);
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
-        }
-        else {
+        } else {
             httpServletResponse.sendRedirect(LIST_REQUEST_URI);
         }
     }

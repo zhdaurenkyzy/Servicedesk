@@ -23,19 +23,13 @@ public class ChangeProjectStateService implements Service {
         ProjectDAO projectDAO = new ProjectDAO();
         Project project = new Project();
         User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             project = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
-        setState(project);
+        project.setState(!project.isState());
         project.setId(project.getId());
         projectDAO.changeProjectState(project);
-        LOGGER.info(String.format("Project state was changed, projectId %d, by operatorId %d", project.getId(),operator.getId()));
-        httpServletRequest.getServletContext().getRequestDispatcher(LIST_PROJECT_WITH_STATE_URI +project.isState()).forward(httpServletRequest, httpServletResponse);
-    }
-
-    public void setState(Project project) {
-        if (project.isState()) {
-            project.setState(false);
-        } project.setState(true);
+        LOGGER.info(String.format("Project state was changed, projectId %d, by operatorId %d", project.getId(), operator.getId()));
+        httpServletRequest.getServletContext().getRequestDispatcher(LIST_PROJECT_WITH_STATE_URI + project.isState()).forward(httpServletRequest, httpServletResponse);
     }
 }

@@ -3,17 +3,17 @@ package com.epam.servicedesk.entity;
 import java.time.LocalDateTime;
 
 public class RequestState {
-    Long requestId;
-    String requestTheme;
-    String statusName;
-    Long requestPriorityId;
-    String groupName;
-    String engineerName;
-    String projectName;
-    String clientName;
-    String authorCreationName;
+    private Long requestId;
+    private String requestTheme;
+    private String statusName;
+    private Long requestPriorityId;
+    private String groupName;
+    private String engineerName;
+    private String projectName;
+    private String clientName;
+    private String authorCreationName;
     private LocalDateTime requestDateOfCreation;
-    String authorOfDecisionName;
+    private String authorOfDecisionName;
     private LocalDateTime requestDateOfDecision;
 
     public Long getRequestId() {
@@ -95,6 +95,7 @@ public class RequestState {
     public void setRequestDateOfCreation(LocalDateTime requestDateOfCreation) {
         this.requestDateOfCreation = requestDateOfCreation;
     }
+
     public String getAuthorOfDecisionName() {
         return authorOfDecisionName;
     }

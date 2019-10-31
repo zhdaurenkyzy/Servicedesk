@@ -18,12 +18,11 @@ public class RequestCabinetService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         getFieldsRequest(httpServletRequest);
-        new ListProjectService().execute(httpServletRequest,httpServletResponse);
-        if((isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)))&&(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)!=null)) {
+        new ListProjectService().execute(httpServletRequest, httpServletResponse);
+        if ((isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))) && (httpServletRequest.getParameter(REQUEST_ID_PARAMETER) != null)) {
             httpServletRequest.setAttribute(REQUEST_PARAMETER, requestDAO.getById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))));
             httpServletRequest.setAttribute(URI, UPDATE_REQUEST_URI);
-        }
-        else{
+        } else {
             httpServletRequest.setAttribute(URI, CREATE_REQUEST_URI);
         }
         httpServletRequest.getServletContext().getRequestDispatcher(REQUEST_CABINET_JSP).forward(httpServletRequest, httpServletResponse);

@@ -4,6 +4,7 @@ import com.epam.servicedesk.exception.ValidationException;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public class UserValidation extends AbstractValidation {
@@ -30,9 +31,10 @@ public class UserValidation extends AbstractValidation {
     }
 
     public static String validateLogin(String login) throws ValidationException {
+        boolean isMatch = doMatch(login, LOGIN_PATTERN);
         if ((login == null) || (EMPTY_STRING.equals(login) || (EMPTY_PLACE.equals(login)) ||
                 (login.length() > MAX_LENGTH_OF_STRING) || (login.length() < MIN_LENGTH_OF_LOGIN) ||
-                !doMatch(login, LOGIN_PATTERN))) {
+                !isMatch)) {
             throw new ValidationException(LOGIN_INCORRECT_FORMAT);
         }
         return login;
@@ -47,14 +49,15 @@ public class UserValidation extends AbstractValidation {
     }
 
     public static String validateMail(String mail) throws ValidationException {
+        boolean isMatch = doMatch(mail, MAIL_PATTERN);
         if ((mail.length() > MAIL_MAX_LENGTH) || (mail.length() < MAIL_MIN_LENGTH) ||
-                !doMatch(mail, MAIL_PATTERN)) {
+                !isMatch) {
             throw new ValidationException(MAIL_INCORRECT_FORMAT);
         }
         return mail;
     }
 
-    private static Boolean doMatch(String string, String regex) {
+    private static boolean doMatch(String string, String regex) {
         boolean isMatch;
         final Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(string);

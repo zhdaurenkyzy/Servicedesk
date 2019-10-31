@@ -25,7 +25,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
 
     @Override
     public String getSelectQuery() {
-        return  GET_ALL_USERS;
+        return GET_ALL_USERS;
     }
 
     @Override
@@ -80,6 +80,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
         user.setUserRole(Role.getRole(resultSet.getLong("USER_ROLE")));
         return user;
     }
+
     protected User idNameResultSet(User user, ResultSet resultSet) throws SQLException {
         user.setId(resultSet.getLong("USER.USER_ID"));
         user.setName(resultSet.getString("USER.USER_NAME"));
@@ -95,27 +96,27 @@ public class UserDAO extends AbstractDAO<User, Long> {
     @Override
     public void delete(User user) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement =connection.prepareStatement(DELETE_USER)) {
-                connection.setAutoCommit(false);
-                deleteUserFromGroup(user, connection);
-                deleteUserFromProject(user, connection);
-                if(user.getUserRole()==Role.CLIENT) {
-                    updateRequestWhenDeleteClient(user, connection);
-                }
-                preparedStatement.setLong(1, user.getId());
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER)) {
+            connection.setAutoCommit(false);
+            deleteUserFromGroup(user, connection);
+            deleteUserFromProject(user, connection);
+            if (user.getUserRole() == Role.CLIENT) {
+                updateRequestWhenDeleteClient(user, connection);
             }
+            preparedStatement.setLong(1, user.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     public void deleteUserFromGroup(User user, Connection connection) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_GROUP)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_GROUP)) {
             preparedStatement.setLong(1, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -125,25 +126,25 @@ public class UserDAO extends AbstractDAO<User, Long> {
 
     public void deleteUserByGroupId(long groupId, List<User> users) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_GROUP_ID )) {
-                connection.setAutoCommit(false);
-                for (User user:users) {
-                    preparedStatement.setLong(1, user.getId());
-                    preparedStatement.setLong(2, groupId);
-                    preparedStatement.executeUpdate();
-                }
-                connection.commit();
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_BY_GROUP_ID)) {
+            connection.setAutoCommit(false);
+            for (User user : users) {
+                preparedStatement.setLong(1, user.getId());
+                preparedStatement.setLong(2, groupId);
+                preparedStatement.executeUpdate();
             }
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     public void deleteUserFromProject(User user, Connection connection) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_PROJECT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_PROJECT)) {
             preparedStatement.setLong(1, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -154,16 +155,16 @@ public class UserDAO extends AbstractDAO<User, Long> {
     public User getByLogin(String login) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
         User user = new User();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_LOGIN)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     parseResultSet(user, resultSet);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_ENTITY_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return user;
@@ -173,8 +174,8 @@ public class UserDAO extends AbstractDAO<User, Long> {
         Connection connection = connectionPool.retrieve();
         List<User> users = new ArrayList<>();
         User user = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS_BY_ROLE);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_USERS_BY_ROLE);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 user = new User();
                 parseResultSet(user, resultSet);
@@ -182,7 +183,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return users;
@@ -193,8 +194,8 @@ public class UserDAO extends AbstractDAO<User, Long> {
         ProjectDAO projectDAO = new ProjectDAO();
         List<User> users = new ArrayList<>();
         User user = null;
-        try(PreparedStatement preparedStatement =connection.prepareStatement(GET_ALL_CLIENT);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CLIENT);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 user = new User();
                 user.setId(resultSet.getLong("USER_ID"));
@@ -208,7 +209,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return users;
@@ -218,18 +219,18 @@ public class UserDAO extends AbstractDAO<User, Long> {
         Connection connection = connectionPool.retrieve();
         List<User> users = new ArrayList<>();
         User user = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USER_BY_GROUP_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USER_BY_GROUP_ID)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     user = new User();
-                    idNameResultSet(user,resultSet);
+                    idNameResultSet(user, resultSet);
                     users.add(user);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return users;
@@ -239,9 +240,9 @@ public class UserDAO extends AbstractDAO<User, Long> {
         Connection connection = connectionPool.retrieve();
         List<User> users = new ArrayList<>();
         User user = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CLIENT_BY_PROJECT_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_CLIENT_BY_PROJECT_ID)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     user = new User();
                     idNameResultSet(user, resultSet);
@@ -250,7 +251,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return users;
@@ -260,9 +261,9 @@ public class UserDAO extends AbstractDAO<User, Long> {
         Connection connection = connectionPool.retrieve();
         List<User> users = new ArrayList<>();
         User user = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USER_WITHOUT_GROUP)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_USER_WITHOUT_GROUP)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     user = new User();
                     idNameResultSet(user, resultSet);
@@ -271,7 +272,7 @@ public class UserDAO extends AbstractDAO<User, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return users;
@@ -280,16 +281,16 @@ public class UserDAO extends AbstractDAO<User, Long> {
     public Long getProjectIdByUserId(Long id) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
         Long projectId = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_PROJECT_ID_BY_USER_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_PROJECT_ID_BY_USER_ID)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     projectId = resultSet.getLong("PROJECT_ID");
                 }
             }
         } catch (SQLException e) {
             LOGGER.error(NOT_FOUND_ENTITY_ID_IN_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return projectId;
@@ -297,51 +298,51 @@ public class UserDAO extends AbstractDAO<User, Long> {
 
     public void addUserToProject(User user, Project project) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(ALL_USER_TO_PROJECT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ALL_USER_TO_PROJECT)) {
             preparedStatement.setLong(1, user.getId());
             preparedStatement.setLong(2, project.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
 
     public void addListUserToGroup(Group group, List<User> users) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement = connection.prepareStatement(ADD_LIST_USER_TO_GROUP)) {
-                connection.setAutoCommit(false);
-                for (User user: users) {
-                    preparedStatement.setLong(1, user.getId());
-                    preparedStatement.setLong(2, group.getId());
-                    preparedStatement.executeUpdate();
-                    connection.commit();
-                }
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_LIST_USER_TO_GROUP)) {
+            connection.setAutoCommit(false);
+            for (User user : users) {
+                preparedStatement.setLong(1, user.getId());
+                preparedStatement.setLong(2, group.getId());
+                preparedStatement.executeUpdate();
+                connection.commit();
             }
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     public void updateUserInProject(User user, Project project) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_IN_PROJECT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_IN_PROJECT)) {
             preparedStatement.setLong(1, project.getId());
             preparedStatement.setLong(2, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(CANNOT_UPDATE_ENTITY_IN_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
 
     public void updateRequestWhenDeleteClient(User user, Connection connection) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_REQUEST_WHEN_DELETE_CLIENT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_REQUEST_WHEN_DELETE_CLIENT)) {
             preparedStatement.setLong(1, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

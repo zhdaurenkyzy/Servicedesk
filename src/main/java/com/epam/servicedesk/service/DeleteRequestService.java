@@ -23,12 +23,12 @@ public class DeleteRequestService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws SQLException, ServletException, IOException, ConnectionException {
         RequestDAO requestDAO = new RequestDAO();
         Request request = new Request();
-        User operator = (User)httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))) {
+        User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
+        if (isNumeric(httpServletRequest.getParameter(REQUEST_ID_PARAMETER))) {
             request = requestDAO.getById(Long.parseLong(httpServletRequest.getParameter(REQUEST_ID_PARAMETER)));
         }
         User user = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(user.getUserRole().getId()==OPERATOR_ROLE_ID_DEFAULT) {
+        if (user.getUserRole().getId() == OPERATOR_ROLE_ID_DEFAULT) {
             requestDAO.delete(request);
             LOGGER.info(String.format("Request was deleted, requestId = %d, by operatorId %d", request.getId(), operator.getId()));
         }

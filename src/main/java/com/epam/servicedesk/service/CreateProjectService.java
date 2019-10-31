@@ -20,11 +20,10 @@ public class CreateProjectService implements Service {
         Project project = new Project();
         String projectName = validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(PROJECT_NAME_PARAMETER));
         project.setName(projectName);
-        if(projectDAO.getByName(projectName).getName()!=null){
+        if (projectDAO.getByName(projectName).getName() != null) {
             httpServletRequest.setAttribute(MESSAGE, PROJECT_ALREADY_EXISTS_MESSAGE_ID);
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-        }
-        else {
+        } else {
             projectDAO.add(project);
             httpServletResponse.sendRedirect(LIST_PROJECT_STATE_TRUE_URI);
         }

@@ -1,6 +1,7 @@
 package com.epam.servicedesk.entity;
 
 import com.epam.servicedesk.enums.Priority;
+
 import java.time.LocalDateTime;
 
 public class Request {

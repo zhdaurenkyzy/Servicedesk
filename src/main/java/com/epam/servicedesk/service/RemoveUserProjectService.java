@@ -20,7 +20,7 @@ public class RemoveUserProjectService implements Service {
         UserDAO userDAO = new UserDAO();
         User user = userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         Connection connection = ConnectionPool.getUniqueInstance().retrieve();
-        userDAO.deleteUserFromProject(user, connection );
+        userDAO.deleteUserFromProject(user, connection);
         ConnectionPool.getUniqueInstance().putback(connection);
         httpServletResponse.sendRedirect(LIST_USER_URI);
     }

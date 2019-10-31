@@ -19,13 +19,12 @@ public class GroupCabinetService implements Service {
         GroupDAO groupDAO = new GroupDAO();
         UserDAO userDAO = new UserDAO();
         String GroupIDFromGetMethod = httpServletRequest.getParameter(GROUP_ID_GET_METHOD);
-        if(isNumeric(GroupIDFromGetMethod) && (GroupIDFromGetMethod!=null)){
+        if (isNumeric(GroupIDFromGetMethod) && (GroupIDFromGetMethod != null)) {
             httpServletRequest.setAttribute(GROUP_PARAMETER, groupDAO.getById(Long.parseLong(GroupIDFromGetMethod)));
             httpServletRequest.setAttribute(USER_LIST, userDAO.getAllUserWithoutGroup(Long.parseLong(GroupIDFromGetMethod)));
             httpServletRequest.setAttribute(USERS_BY_GROUP_ID_PARAMETER, userDAO.getAllUserByGroupId(Long.parseLong(GroupIDFromGetMethod)));
             httpServletRequest.setAttribute(URI, UPDATE_GROUP_NAME_URI);
-        }
-        else {
+        } else {
             httpServletRequest.setAttribute(URI, CREATE_GROUP_URI);
             httpServletRequest.setAttribute(USER_LIST, userDAO.getAll());
         }

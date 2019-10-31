@@ -24,7 +24,7 @@ public class AddUserToGroupService implements Service {
         UserDAO userDAO = new UserDAO();
         GroupDAO groupDAO = new GroupDAO();
         String currentGroupId = httpServletRequest.getParameter(GROUP_ID_PARAMETER);
-        if(isNumeric(currentGroupId)) {
+        if (isNumeric(currentGroupId)) {
             Group currentGroup = groupDAO.getById(Long.parseLong(currentGroupId));
             String[] stringUserIdList = httpServletRequest.getParameterValues(ALL_USER_LIST_PARAMETER);
             List<Long> userIdListOfSelectedUsers = new ArrayList<>();
@@ -45,8 +45,8 @@ public class AddUserToGroupService implements Service {
     private boolean checkId(List<Long> userIdListOfSelectedUsers, long groupID) throws ConnectionException {
         for (long id : userIdListOfSelectedUsers) {
             UserDAO userDAO = new UserDAO();
-            for (User user:userDAO.getAllUserByGroupId(groupID)) {
-                if(id==user.getId()){
+            for (User user : userDAO.getAllUserByGroupId(groupID)) {
+                if (id == user.getId()) {
                     return false;
                 }
             }

@@ -41,7 +41,7 @@ public final class ConstantForApp {
     public static final String DECISION_PARAMETER = "decision";
     public static final String DESCRIPTION_PARAMETER = "description";
     public static final String ENGINEER_ID_PARAMETER = "engineerId";
-    public static final String HISTORIES_PARAMETER =  "histories";
+    public static final String HISTORIES_PARAMETER = "histories";
     public static final String GROUP_PARAMETER = "group";
     public static final String GROUP_ID_PARAMETER = "groupId";
     public static final String GROUP_LIST_PARAMETER = "groups";

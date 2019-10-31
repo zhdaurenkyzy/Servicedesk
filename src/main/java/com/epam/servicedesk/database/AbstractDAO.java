@@ -18,25 +18,31 @@ public abstract class AbstractDAO<E, PK> implements GenericDAO<E, PK> {
     private final ConnectionPool connectionPool = ConnectionPool.getUniqueInstance();
 
     public abstract String getSelectQuery();
+
     public abstract String getQueryById();
+
     public abstract String getCreateQuery();
+
     public abstract String getUpdateQuery();
 
     protected abstract void prepareStatementForSet(E entity, PreparedStatement preparedStatement) throws SQLException;
+
     protected abstract void prepareStatementForUpdate(E entity, PreparedStatement preparedStatement) throws SQLException;
+
     protected abstract E parseResultSet(E entity, ResultSet resultSet) throws SQLException;
+
     protected abstract E create();
 
     @Override
     public void add(E entity) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
         String sql = getCreateQuery();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             prepareStatementForSet(entity, preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
@@ -45,12 +51,12 @@ public abstract class AbstractDAO<E, PK> implements GenericDAO<E, PK> {
     public void update(E entity) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
         String sql = getUpdateQuery();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             prepareStatementForUpdate(entity, preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(CANNOT_UPDATE_ENTITY_IN_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
@@ -60,16 +66,16 @@ public abstract class AbstractDAO<E, PK> implements GenericDAO<E, PK> {
         Connection connection = connectionPool.retrieve();
         E entity = create();
         String sql = getQueryById();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     parseResultSet(entity, resultSet);
                 }
             }
         } catch (SQLException e) {
             LOGGER.error(NOT_FOUND_ENTITY_BY_ID_IN_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return entity;
@@ -82,7 +88,7 @@ public abstract class AbstractDAO<E, PK> implements GenericDAO<E, PK> {
         E entity = null;
         String sql = getSelectQuery();
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()){
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 entity = create();
                 parseResultSet(entity, resultSet);

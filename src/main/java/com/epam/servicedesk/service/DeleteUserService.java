@@ -22,11 +22,11 @@ public class DeleteUserService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, SQLException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         User user = new User();
-        if(isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
+        if (isNumeric(httpServletRequest.getParameter(ID_PARAMETER))) {
             user = userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
         }
         User operator = (User) httpServletRequest.getSession().getAttribute(USER_PARAMETER);
-        if(operator.getUserRole().getId()==OPERATOR_ROLE_ID_DEFAULT) {
+        if (operator.getUserRole().getId() == OPERATOR_ROLE_ID_DEFAULT) {
             userDAO.delete(user);
             LOGGER.info(String.format("User was deleted, userName = %s, by operatorId %d", user.getName(), operator.getId()));
         }

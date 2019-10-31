@@ -7,7 +7,7 @@ import static com.epam.servicedesk.util.ConstantForApp.INCORRECT_FORMAT;
 
 public class RequestValidation extends AbstractValidation {
 
-    public static String validateTheme(String theme) throws ValidationException  {
+    public static String validateTheme(String theme) throws ValidationException {
         return validateString(theme, THEME_MAX_LENGTH);
     }
 

@@ -1,9 +1,9 @@
 package com.epam.servicedesk.entity;
 
 public class Language {
-    long id;
-    String name;
-    String local;
+    private long id;
+    private String name;
+    private String local;
 
     public long getId() {
         return id;

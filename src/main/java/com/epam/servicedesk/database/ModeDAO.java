@@ -68,9 +68,9 @@ public class ModeDAO extends AbstractDAO<Mode, Long> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_MODE)) {
             preparedStatement.setLong(1, mode.getId());
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
@@ -80,7 +80,7 @@ public class ModeDAO extends AbstractDAO<Mode, Long> {
         Mode mode = create();
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_MODE_BY_NAME)) {
             preparedStatement.setString(1, name);
-            try(ResultSet resultSet = preparedStatement.executeQuery();) {
+            try (ResultSet resultSet = preparedStatement.executeQuery();) {
                 while (resultSet.next()) {
                     mode.setId(resultSet.getLong("MODE_ID"));
                     mode.setName(resultSet.getString("MODE_NAME"));
@@ -88,7 +88,7 @@ public class ModeDAO extends AbstractDAO<Mode, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return mode;

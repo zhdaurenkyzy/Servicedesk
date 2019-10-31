@@ -36,7 +36,7 @@ public class LevelDAO extends AbstractDAO<Level, Long> {
     }
 
     @Override
-    protected void prepareStatementForUpdate(Level level, PreparedStatement preparedStatement) throws SQLException {
+    protected void prepareStatementForUpdate(Level level, PreparedStatement preparedStatement) {
 
     }
 

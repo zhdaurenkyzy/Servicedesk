@@ -70,7 +70,7 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
         Project project = new Project();
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_PROJECT_BY_NAME)) {
             preparedStatement.setString(1, name);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     project.setId(resultSet.getLong("PROJECT_ID"));
                     project.setName(resultSet.getString("PROJECT_NAME"));
@@ -78,7 +78,7 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
             }
         } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_ENTITY_BY_NAME_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return project;
@@ -90,16 +90,16 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
         Project project = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_PROJECT_BY_STATE)) {
             preparedStatement.setBoolean(1, state);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     project = new Project();
                     parseResultSet(project, resultSet);
                     projects.add(project);
                 }
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             LOGGER.error(CANNOT_DOWNLOAD_LIST_FROM_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
         return projects;
@@ -107,13 +107,13 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
 
     public void changeProjectState(Project project) throws ConnectionException {
         Connection connection = connectionPool.retrieve();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_PROJECT_STATE)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CHANGE_PROJECT_STATE)) {
             preparedStatement.setBoolean(1, project.isState());
             preparedStatement.setLong(2, project.getId());
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOGGER.error(CANNOT_UPDATE_ENTITY_IN_MYSQL, e);
-        }finally {
+        } finally {
             connectionPool.putback(connection);
         }
     }
@@ -121,7 +121,7 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
     @Override
     public void delete(Project project) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PROJECT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PROJECT)) {
             connection.setAutoCommit(false);
             deleteUserFromUserProjectAndUser(project, connection);
             preparedStatement.setLong(1, project.getId());
@@ -136,10 +136,10 @@ public class ProjectDAO extends AbstractDAO<Project, Long> {
     }
 
     public void deleteUserFromUserProjectAndUser(Project project, Connection connection) {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_USER_PROJECT_AND_USER)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_FROM_USER_PROJECT_AND_USER)) {
             preparedStatement.setLong(1, project.getId());
             preparedStatement.executeUpdate();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
         }
     }

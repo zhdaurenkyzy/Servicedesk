@@ -3,7 +3,7 @@ package com.epam.servicedesk.taglib;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-public class CustomTag extends TagSupport{
+public class CustomTag extends TagSupport {
     private boolean displayBody = false;
 
     public void setDisplayBody(boolean displayBody) {
@@ -12,7 +12,7 @@ public class CustomTag extends TagSupport{
 
     @Override
     public int doStartTag() throws JspException {
-        if( displayBody ){
+        if (displayBody) {
             return EVAL_BODY_INCLUDE;
         }
         return SKIP_BODY;

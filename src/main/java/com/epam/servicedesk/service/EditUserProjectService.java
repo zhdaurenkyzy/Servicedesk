@@ -19,13 +19,12 @@ public class EditUserProjectService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ConnectionException {
         UserDAO userDAO = new UserDAO();
         ProjectDAO projectDAO = new ProjectDAO();
-        if(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER)!=null){
-            User user=userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
+        if (httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER) != null) {
+            User user = userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)));
             Project selectProject = projectDAO.getById(Long.parseLong(httpServletRequest.getParameter(SELECT_PROJECT_PARAMETER)));
-            if(userDAO.getProjectIdByUserId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER)))!=null){
+            if (userDAO.getProjectIdByUserId(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))) != null) {
                 userDAO.updateUserInProject(user, selectProject);
-            }
-            else {
+            } else {
                 userDAO.addUserToProject(userDAO.getById(Long.parseLong(httpServletRequest.getParameter(ID_PARAMETER))), selectProject);
             }
         }

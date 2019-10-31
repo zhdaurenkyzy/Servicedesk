@@ -19,13 +19,12 @@ public class CreateModeService implements Service {
     public void execute(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException, ValidationException, ConnectionException {
         ModeDAO modeDAO = new ModeDAO();
         Mode mode = new Mode();
-        String modeName = validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(MODE_NAME_PARAMETER ));
+        String modeName = validateNameGroupOrProjectOrMode(httpServletRequest.getParameter(MODE_NAME_PARAMETER));
         mode.setName(modeName);
-        if(modeDAO.getByName(modeName).getName()!=null){
+        if (modeDAO.getByName(modeName).getName() != null) {
             httpServletRequest.setAttribute(MESSAGE, MODE_ALREADY_EXISTS_MESSAGE_ID);
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-        }
-        else {
+        } else {
             modeDAO.add(mode);
             httpServletResponse.sendRedirect(LIST_MODE_URI);
         }

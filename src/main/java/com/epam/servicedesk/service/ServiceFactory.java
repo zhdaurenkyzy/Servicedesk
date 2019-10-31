@@ -14,7 +14,7 @@ public class ServiceFactory {
         init();
     }
 
-    private void init(){
+    private void init() {
         STRING_SERVICE_MAP.put(ADD_USER_TO_GROUP_URI, new AddUserToGroupService());
         STRING_SERVICE_MAP.put(CHANGE_STATE_URI, new ChangeProjectStateService());
         STRING_SERVICE_MAP.put(CREATE_GROUP_URI, new CreateGroupService());
@@ -59,11 +59,11 @@ public class ServiceFactory {
 
     }
 
-    public static ServiceFactory getInstance(){
+    public static ServiceFactory getInstance() {
         return SERVICE_FACTORY;
     }
 
-    public Service getService(String stringUri){
+    public Service getService(String stringUri) {
         return STRING_SERVICE_MAP.get(stringUri);
     }
 }

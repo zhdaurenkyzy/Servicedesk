@@ -1,13 +1,17 @@
 package com.epam.servicedesk.filter;
 
 import com.epam.servicedesk.enums.Role;
+
 import java.util.*;
 
 import static com.epam.servicedesk.util.ConstantForApp.*;
 
 public class SecurityConfig {
 
-    private  static final Map<Role, List<String>> mapConfig = new HashMap<>();
+    private SecurityConfig() {
+    }
+
+    private static final EnumMap<Role, List<String>> mapConfig = new EnumMap<Role, List<String>>(Role.class);
 
     static {
         init();
@@ -45,6 +49,7 @@ public class SecurityConfig {
         urlPatternsOperator.add(LIST_GROUP_URI);
         urlPatternsOperator.add(LIST_MODE_URI);
         urlPatternsOperator.add(CREATE_MODE_URI);
+        urlPatternsOperator.add(CHANGE_STATE_URI);
         urlPatternsOperator.add(DELETE_GROUP_URI);
         urlPatternsOperator.add(DELETE_MODE_URI);
         urlPatternsOperator.add(DELETE_REQUEST_URI);
@@ -86,7 +91,7 @@ public class SecurityConfig {
     }
 
     private static void setUrl(List<String> urlPatterns, List<String> otherUrlPatterns) {
-        for (String url:urlPatterns) {
+        for (String url : urlPatterns) {
             otherUrlPatterns.add(url);
         }
     }

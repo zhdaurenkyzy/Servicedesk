@@ -29,11 +29,10 @@ public class RegistrationService implements Service {
         user.setLogin(validateLogin(httpServletRequest.getParameter(LOGIN_PARAMETER)));
         user.setPassword(passwordHashing(validatePassword(httpServletRequest.getParameter(PASSWORD_PARAMETER))));
         user.setUserRole(Role.GUEST);
-        if(user.getLogin().equals(userDAO.getByLogin(user.getLogin()).getLogin())){
+        if (user.getLogin().equals(userDAO.getByLogin(user.getLogin()).getLogin())) {
             httpServletRequest.setAttribute(MESSAGE, ACCOUNT_ALREADY_EXISTS_MESSAGE_ID);
             httpServletRequest.getRequestDispatcher(ERROR_JSP).forward(httpServletRequest, httpServletResponse);
-        }
-        else {
+        } else {
             userDAO.add(user);
             httpServletResponse.sendRedirect(MAIN_URI);
         }

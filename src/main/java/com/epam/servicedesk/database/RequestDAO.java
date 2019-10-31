@@ -138,88 +138,86 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
 
     public void addDecisionByRequestById(Request request, User user) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement =connection.prepareStatement(ADD_DECISION)) {
-                connection.setAutoCommit(false);
-                HistoryDAO historyDAO = new HistoryDAO();
-                historyDAO.fieldsComparisonAndAddHistory(request, connection, user);
-                preparedStatement.setString(1, request.getDecision());
-                preparedStatement.setLong(2, request.getAuthorOfDecisionId());
-                preparedStatement.setTimestamp(3, Timestamp.valueOf(request.getDateOfDecision()));
-                preparedStatement.setLong(4, request.getStatusId());
-                preparedStatement.setLong(5, request.getId());
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
-            }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_DECISION)) {
+            connection.setAutoCommit(false);
+            HistoryDAO historyDAO = new HistoryDAO();
+            historyDAO.fieldsComparisonAndAddHistory(request, connection, user);
+            preparedStatement.setString(1, request.getDecision());
+            preparedStatement.setLong(2, request.getAuthorOfDecisionId());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(request.getDateOfDecision()));
+            preparedStatement.setLong(4, request.getStatusId());
+            preparedStatement.setLong(5, request.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_ADD_NEW_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     public void updateRequestById(Request request, User user) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_REQUEST)) {
-                connection.setAutoCommit(false);
-                HistoryDAO historyDAO = new HistoryDAO();
-                historyDAO.fieldsComparisonAndAddHistory(request, connection, user);
-                preparedStatement.setString(1, request.getTheme());
-                preparedStatement.setString(2, request.getDescription());
-                preparedStatement.setLong(3, request.getStatusId());
-                preparedStatement.setLong(4, request.getLevelId());
-                preparedStatement.setLong(5, request.getModeId());
-                preparedStatement.setLong(6, request.getPriority().getId());
-                preparedStatement.setLong(7, request.getGroupId());
-                preparedStatement.setLong(8, request.getEngineerId());
-                preparedStatement.setLong(9, request.getProjectId());
-                preparedStatement.setLong(10, request.getClientId());
-                preparedStatement.setString(11, request.getDecision());
-                if (request.getAuthorOfDecisionId() != 0) {
-                    preparedStatement.setLong(12, request.getAuthorOfDecisionId());
-                }
-                else preparedStatement.setLong(12, 0);
-                if (request.getDateOfDecision() != null) {
-                    preparedStatement.setTimestamp(13, Timestamp.valueOf(request.getDateOfDecision()));
-                }
-                else preparedStatement.setTimestamp(13, null);
-                preparedStatement.setLong(14, request.getId());
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_UPDATE_ENTITY_IN_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
-            }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_REQUEST)) {
+            connection.setAutoCommit(false);
+            HistoryDAO historyDAO = new HistoryDAO();
+            historyDAO.fieldsComparisonAndAddHistory(request, connection, user);
+            preparedStatement.setString(1, request.getTheme());
+            preparedStatement.setString(2, request.getDescription());
+            preparedStatement.setLong(3, request.getStatusId());
+            preparedStatement.setLong(4, request.getLevelId());
+            preparedStatement.setLong(5, request.getModeId());
+            preparedStatement.setLong(6, request.getPriority().getId());
+            preparedStatement.setLong(7, request.getGroupId());
+            preparedStatement.setLong(8, request.getEngineerId());
+            preparedStatement.setLong(9, request.getProjectId());
+            preparedStatement.setLong(10, request.getClientId());
+            preparedStatement.setString(11, request.getDecision());
+            if (request.getAuthorOfDecisionId() != 0) {
+                preparedStatement.setLong(12, request.getAuthorOfDecisionId());
+            } else preparedStatement.setLong(12, 0);
+            if (request.getDateOfDecision() != null) {
+                preparedStatement.setTimestamp(13, Timestamp.valueOf(request.getDateOfDecision()));
+            } else preparedStatement.setTimestamp(13, null);
+            preparedStatement.setLong(14, request.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_UPDATE_ENTITY_IN_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     @Override
     public void delete(Request request) throws SQLException, ConnectionException {
         Connection connection = connectionPool.retrieve();
-            try(PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REQUEST)) {
-                connection.setAutoCommit(false);
-                HistoryDAO historyDAO = new HistoryDAO();
-                historyDAO.deleteHistoryByRequestId(request, connection);
-                preparedStatement.setLong(1, request.getId());
-                preparedStatement.executeUpdate();
-                connection.commit();
-            } catch (SQLException e) {
-                LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
-                connection.rollback();
-            } finally {
-                connection.setAutoCommit(true);
-                connectionPool.putback(connection);
-            }
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REQUEST)) {
+            connection.setAutoCommit(false);
+            HistoryDAO historyDAO = new HistoryDAO();
+            historyDAO.deleteHistoryByRequestId(request, connection);
+            preparedStatement.setLong(1, request.getId());
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(CANNOT_DELETE_ENTITY_BY_MYSQL, e);
+            connection.rollback();
+        } finally {
+            connection.setAutoCommit(true);
+            connectionPool.putback(connection);
+        }
     }
 
     public List<RequestState> getAllRequestView() throws ConnectionException {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_FIELDS_OF_ALL_REQUEST);
-            ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_FIELDS_OF_ALL_REQUEST);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
             while (resultSet.next()) {
                 requestState = new RequestState();
                 requestStateResultSet(requestState, resultSet);
@@ -236,9 +234,9 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, id);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     requestState = new RequestState();
                     requestStateResultSet(requestState, resultSet);
@@ -256,11 +254,11 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, userId);
             preparedStatement.setLong(3, userId);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     requestState = new RequestState();
                     requestStateResultSet(requestState, resultSet);
@@ -278,12 +276,12 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setLong(1, userId);
             preparedStatement.setLong(2, userId);
             preparedStatement.setLong(3, userId);
             preparedStatement.setLong(4, statusId);
-            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     requestState = new RequestState();
                     requestStateResultSet(requestState, resultSet);
@@ -301,14 +299,14 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(CallableStatement callableStatement = connection.prepareCall(SEARCH_BY_USER)) {
+        try (CallableStatement callableStatement = connection.prepareCall(SEARCH_BY_USER)) {
             callableStatement.setString(1, column);
             callableStatement.setLong(2, userId);
             callableStatement.setLong(3, statusId);
             callableStatement.setString(4, searchCriteria);
             callableStatement.setString(5, searchString);
             callableStatement.setLong(6, searchId);
-            try(ResultSet resultSet = callableStatement.executeQuery()) {
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
                 while (resultSet.next()) {
                     requestState = new RequestState();
                     requestStateResultSet(requestState, resultSet);
@@ -326,11 +324,11 @@ public class RequestDAO extends AbstractDAO<Request, Long> {
         Connection connection = connectionPool.retrieve();
         List<RequestState> requestStates = new ArrayList<>();
         RequestState requestState = null;
-        try(CallableStatement callableStatement = connection.prepareCall(SEARCH_BY_OPERATOR)) {
+        try (CallableStatement callableStatement = connection.prepareCall(SEARCH_BY_OPERATOR)) {
             callableStatement.setString(1, searchCriteria);
             callableStatement.setString(2, searchString);
             callableStatement.setLong(3, searchId);
-            try(ResultSet resultSet = callableStatement.executeQuery()) {
+            try (ResultSet resultSet = callableStatement.executeQuery()) {
                 while (resultSet.next()) {
                     requestState = new RequestState();
                     requestStateResultSet(requestState, resultSet);

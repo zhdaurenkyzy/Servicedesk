@@ -1,6 +1,7 @@
 package com.epam.servicedesk.enums;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public enum Role {
     OPERATOR(0),
@@ -20,8 +21,8 @@ public enum Role {
 
     public static Role getRole(long id) {
         Role[] roles = Role.values();
-        return Arrays.stream(roles).filter(r ->
-                r.getId() == id
-        ).findFirst().get();
+        return Optional.of(Arrays.stream(roles).filter(r ->
+                r.getId() == id).findFirst().get())
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

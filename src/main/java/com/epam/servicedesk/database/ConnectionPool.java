@@ -37,7 +37,7 @@ public class ConnectionPool {
             try {
                 CONNECTION_QUEUE.put(getConnection());
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -51,7 +51,7 @@ public class ConnectionPool {
         try {
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error(CONNECTION_NOT_FOUND, e);
         }
         return connection;
     }
@@ -61,7 +61,7 @@ public class ConnectionPool {
         try {
             connection = CONNECTION_QUEUE.take();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         return connection;
     }
@@ -71,10 +71,9 @@ public class ConnectionPool {
             try {
                 CONNECTION_QUEUE.put(connection);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
-        }
-        else {
+        } else {
             LOGGER.error(CONNECTION_NOT_FOUND);
             throw new ConnectionException();
         }
